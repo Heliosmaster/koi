@@ -1,26 +1,25 @@
-= session[:user] || "No user selected"
-= @user.name if @user
-%div.col-md-6.col-md-offset-3
-  %table.table.table-striped
-    %thead
-      %tr
-        %th id
-        %th date
-        %th amount
-        %th target
-        %th reason
-        -# %th category
-    %tbody
-      -# - @user.transactions.each do |t|
-      %tr
-        %td 1
-        %td 1
-        %td 1
-        %td 1
-        %td 1
-        -# %td= t.id
-        -# %td= t.date
-        -# %td= t.amount
-        -# %td= t.target
-        -# %td= t.reason
-          -# %td= t.category
+- if @user
+  %div.col-md-6.col-md-offset-3
+    %h2 Transactions
+  %div.col-md-6.col-md-offset-3
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th Id
+          %th Date
+          %th Amount
+          %th Target
+          %th Reason
+      %tbody
+        - @user.transactions.each do |t|
+          %tr
+            %td t.id
+            %td t.date
+            %td t.amount
+            %td t.target
+            %td t.reason_text
+  %div.col-md-1
+    %a.btn.btn-primary{href: "/transaction/add", style: "margin-bottom:10px;"} Add transaction
+    %a.btn.btn-success{href: "/transaction/import"} Import transactions
+- else
+  %div.alert.alert-warning Please select a user from the dropdown

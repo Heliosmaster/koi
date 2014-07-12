@@ -28,3 +28,11 @@ post '/select_user' do
   session[:user] = @user ? @user.id : nil
   redirect to '/'
 end
+
+get '/transaction/add' do
+  redirect to '/'
+end
+
+get '/transaction/import' do
+  redirect to '/'
+end

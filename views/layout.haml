@@ -15,4 +15,15 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
+      %ul.navbar.nav.navbar-right
+        %li
+          %form{action: "/select_user", method: "post"}
+            %select.form-control{onchange: "submit()", name: "user_select"}
+              %option Select user
+              - User.all.each do |user|
+                - if session[:user] == user.name
+                  %option{selected: true}
+                    = user.name
+                - else 
+                  %option= user.name
     = yield

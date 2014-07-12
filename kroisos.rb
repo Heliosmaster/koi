@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/cookies'
 require 'data_mapper'
 require 'haml'
 require 'date'
@@ -13,6 +14,14 @@ DataMapper.finalize.auto_upgrade!
 User.create(name: "Davide")
 User.create(name: "Kleopatra")
 
+enable :sessions
+
 get '/' do
   haml :home, layout: :layout
+end
+
+post '/select_user' do
+  @user = params["user_select"]
+  session[:user] = @user
+  redirect to '/'
 end

@@ -19,6 +19,10 @@
       %div.col-md-10
         %input{type: "text", class: "form-control", placeholder: "reason", name: "transaction[reason]"}
     %div.form-group
+      %label.col-md-2 Shared
+      %div.col-md-10
+        %input{type: "checkbox", value: "t", checked: true, name: "transaction[shared]"}
+    %div.form-group
       %div.col-md-10.col-md-offset-2
         %a{href:"/", class:"btn btn-default"} Back
         %button{type: "submit", class: "btn btn-primary"} Submit

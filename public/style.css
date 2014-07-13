@@ -1,6 +1,12 @@
-.glyphicon-pencil {
-    color:blue;
+.glyphicon-pencil, .glyphicon-trash {
+    color:white;
 }
-.glyphicon-trash {
+.glyphicon-ok {
+    color:green;
+    font-size:130%;
+}
+.glyphicon-remove {
     color:red;
+    font-size:130%;
 }
+

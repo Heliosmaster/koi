@@ -5,6 +5,7 @@ class Transaction
   property :date, Date, required: true
   property :target, String
   property :reason, String
+  property :shared, Boolean, default: true
 
   belongs_to :user
 
@@ -15,6 +16,7 @@ class Transaction
     t.user = user
     t.reason = params["reason"]
     t.target = params["target"]
+    t.shared = params["shared"]
     throw t.errors unless t.save
   end
 
@@ -23,6 +25,7 @@ class Transaction
     self.date = Date.parse(params["date"])
     self.reason = params["reason"]
     self.target = params["target"]
+    self.shared = params["shared"]
     throw self.errors unless self.save
   end
 end

@@ -4,7 +4,8 @@
     %meta{:charset => "utf-8"}
     %title Kroisos
     %link{href: "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel: "stylesheet"}
-    %link{href: "style.css", type:"text/css", rel: "stylesheet"}
+    %link{href: "#{url("style.css")}", type:"text/css", rel: "stylesheet"}
+    -# %link{href: "#{url("bootstrap.min.css")}", type:"text/css", rel: "stylesheet"}
   %body
     -# navigation styled for Bootstrap 3.0
     %nav.navbar.navbar-inverse{style: "border-radius:0"}

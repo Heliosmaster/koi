@@ -1,0 +1,29 @@
+%div.col-md-6.col-md-offset-3
+  %form{action: "/transaction/#{@transaction.id}", method: "post", class: "form-horizontal"}
+    %input{name: "_method", type: "hidden", value: "put"}
+    %div.form-group
+      %label.col-md-2 Date
+      %div.col-md-10
+        %input{type: "date", class: "form-control", value:"#{@transaction.date}", name: "transaction[date]"}
+    %div.form-group
+      %label.col-md-2 Amount
+      %div.col-md-10
+        %div.input-group
+          %span.input-group-addon €
+          %input{type: "number", class: "form-control", min: "0", step: "0.5", value: "#{@transaction.amount}", name: "transaction[amount]"}
+    %div.form-group
+      %label.col-md-2 Target
+      %div.col-md-10
+        %input{type: "text", class: "form-control", value: "#{@transaction.target}", name: "transaction[target]"}
+    %div.form-group
+      %label.col-md-2 Reason
+      %div.col-md-10
+        %input{type: "text", class: "form-control", value: "#{@transaction.reason}", name: "transaction[reason]"}
+    %div.form-group
+      %label.col-md-2 Shared
+      %div.col-md-10
+        %input{type: "checkbox", name: "shared"}
+    %div.form-group
+      %div.col-md-10.col-md-offset-2
+        %a{href:"/", class:"btn btn-default"} Back
+        %button{type: "submit", class: "btn btn-primary"} Update

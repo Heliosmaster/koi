@@ -13,11 +13,11 @@
       %tbody
         - @user.transactions.each do |t|
           %tr
-            %td t.id
-            %td t.date
-            %td t.amount
-            %td t.target
-            %td t.reason_text
+            %td= t.id
+            %td= t.date
+            %td= t.amount
+            %td= t.target
+            %td= t.reason
   %div.col-md-1
     %a.btn.btn-primary{href: "/transaction/add", style: "margin-bottom:10px;"} Add transaction
     %a.btn.btn-success{href: "/transaction/import"} Import transactions

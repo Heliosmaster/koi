@@ -1,0 +1,23 @@
+%div.col-md-6.col-md-offset-3
+  %form{action: "/transaction/add", method: "post", class: "form-horizontal"}
+    %div.form-group
+      %label.col-md-2 Date
+      %div.col-md-10
+        %input{type: "date", class: "form-control", value:"#{Date.today}", name: "transaction[date]"}
+    %div.form-group
+      %label.col-md-2 Amount
+      %div.col-md-10
+        %div.input-group
+          %span.input-group-addon €
+          %input{type: "number", class: "form-control", min: "0", step: "0.5", placeholder: "0.0", name: "transaction[amount]"}
+    %div.form-group
+      %label.col-md-2 Target
+      %div.col-md-10
+        %input{type: "text", class: "form-control", placeholder: "target", name: "transaction[target]"}
+    %div.form-group
+      %label.col-md-2 Reason
+      %div.col-md-10
+        %input{type: "text", class: "form-control", placeholder: "reason", name: "transaction[reason]"}
+    %div.form-group
+      %div.col-md-10.col-md-offset-2
+        %button{type: "submit", class: "btn btn-primary"} Submit

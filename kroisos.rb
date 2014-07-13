@@ -30,8 +30,18 @@ post '/select_user' do
 end
 
 get '/transaction/add' do
+  @user = User.get(session[:user])
+  haml :form, layout: :layout
+end
+
+post '/transaction/add' do
+  @user ||= User.get(session[:user])
+  @transaction_params = params[:transaction]
+  Transaction.create_from_params(@transaction_params,@user)
   redirect to '/'
 end
+
+
 
 get '/transaction/import' do
   redirect to '/'

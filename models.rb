@@ -17,6 +17,14 @@ class Transaction
     t.target = params["target"]
     throw t.errors unless t.save
   end
+
+  def update_from_params(params)
+    self.amount = params["amount"].to_f
+    self.date = Date.parse(params["date"])
+    self.reason = params["reason"]
+    self.target = params["target"]
+    throw self.errors unless self.save
+  end
 end
 
 class User
@@ -26,4 +34,3 @@ class User
 
   has n, :transactions
 end
-

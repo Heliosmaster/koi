@@ -16,6 +16,8 @@ User.create(name: "Davide")
 User.create(name: "Kleopatra")
 
 enable :sessions
+enable :method_override
+
 set :session_secret, "supersecretphrase"
 
 get '/' do
@@ -36,12 +38,24 @@ end
 
 post '/transaction/add' do
   @user ||= User.get(session[:user])
-  @transaction_params = params[:transaction]
-  Transaction.create_from_params(@transaction_params,@user)
+  Transaction.create_from_params(params[:transaction],@user)
   redirect to '/'
 end
 
+get '/transaction/:id/edit' do
+  @transaction = Transaction.get(params[:id])
+  haml :edit, layout: :layout
+end
 
+put '/transaction/:id' do
+  Transaction.get(params[:id]).update_from_params(params[:transaction])
+  redirect to "/"
+end
+
+delete '/transaction/:id' do
+  Transaction.get(params[:id]).destroy
+  redirect to "/"
+end
 
 get '/transaction/import' do
   redirect to '/'

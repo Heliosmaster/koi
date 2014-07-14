@@ -29,7 +29,7 @@ class Transaction
     throw self.errors unless self.save
   end
 
-  def self.create_from_csv(csv, user)
+  def self.create_from_csv(csv,user,default_shared)
     CSV.foreach(csv) do |row|
       t = new
       t.date = row[2]
@@ -37,7 +37,7 @@ class Transaction
       t.reason = row[10]
       t.target = row[6]
       t.user = user
-      t.shared = true
+      t.shared = default_shared
       throw t.errors unless t.save
     end
   end

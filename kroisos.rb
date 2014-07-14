@@ -49,7 +49,7 @@ end
 
 post '/transaction/import' do
   @user ||= User.get(session[:user])
-  Transaction.create_from_csv(params[:file],@user)
+  Transaction.create_from_csv(params[:file],@user,params[:shared])
   redirect to '/'
 end
 

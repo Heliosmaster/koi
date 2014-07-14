@@ -3,7 +3,7 @@ require 'sinatra/cookies'
 require 'data_mapper'
 require 'haml'
 require 'date'
-
+require 'csv'
 
 require_relative 'models'
 # If you want the logs displayed you have to do this before the call to setup
@@ -42,6 +42,17 @@ post '/transaction/add' do
   redirect to '/'
 end
 
+get '/transaction/import' do
+  @user ||= User.get(session[:user])
+  haml :import, layout: :layout
+end
+
+post '/transaction/import' do
+  @user ||= User.get(session[:user])
+  Transaction.create_from_csv(params[:file],@user)
+  redirect to '/'
+end
+
 get '/transaction/:id/edit' do
   @transaction = Transaction.get(params[:id])
   haml :edit, layout: :layout
@@ -55,8 +66,4 @@ end
 delete '/transaction/:id' do
   Transaction.get(params[:id]).destroy
   redirect to "/"
-end
-
-get '/transaction/import' do
-  redirect to '/'
 end

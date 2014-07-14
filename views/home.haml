@@ -1,11 +1,19 @@
 - if @user
-  %div.col-md-8.col-md-offset-2
-    %h2 Transactions
-  %div.col-md-8.col-md-offset-2
+  %div.col-md-10.col-md-offset-1
+    %div.col-md-7
+      %h2 Transactions
+    %div.pull-right
+      %div.btn-group
+        %a.btn.btn-primary{href: "/transaction/add", style: "margin-bottom:10px;"}
+          Add transaction
+          %span.glyphicon.glyphicon-plus
+        %a.btn.btn-success{href: "/transaction/import"}
+          Import transactions
+          %span.glyphicon.glyphicon-upload
+  %div.col-md-10.col-md-offset-1
     %table.table.table-bordered.table-striped
       %thead
         %tr
-          %th Id
           %th Date
           %th Amount
           %th Target
@@ -13,9 +21,8 @@
           %th Shared?
           %th Actions
       %tbody
-        - @user.transactions.each do |t|
+        - @user.transactions.sort_by(&:date).each do |t|
           %tr
-            %td= t.id
             %td= t.date
             %td= t.amount
             %td= t.target
@@ -33,12 +40,6 @@
                 %input{name: "_method", type: "hidden", value: "delete"}
                 %button{type:"submit", class:"btn btn-danger"}
                   %span.glyphicon.glyphicon-trash
-  %div.col-md-1
-    %a.btn.btn-primary{href: "/transaction/add", style: "margin-bottom:10px;"}
-      Add transaction
-      %span.glyphicon.glyphicon-plus
-    %a.btn.btn-success{href: "/transaction/import"}
-      Import transactions
-      %span.glyphicon.glyphicon-upload
+ 
 - else
   %div.alert.alert-warning Please select a user from the dropdown

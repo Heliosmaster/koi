@@ -9,7 +9,7 @@
       %div.col-md-10
         %div.input-group
           %span.input-group-addon €
-          %input{type: "number", class: "form-control", min: "0", step: "0.5", placeholder: "0.0", name: "transaction[amount]"}
+          %input{type: "number", class: "form-control", step: "0.5", placeholder: "0.0", name: "transaction[amount]"}
     %div.form-group
       %label.col-md-2 Target
       %div.col-md-10
@@ -21,7 +21,6 @@
     %div.form-group
       %label.col-md-2 Shared
       %div.col-md-10
-        -# %input{type: "hidden", value: "f", name: "shared"}
         %input{type: "checkbox", value: "t", checked: true, name: "transaction[shared]"}
     %div.form-group
       %div.col-md-10.col-md-offset-2

@@ -9,6 +9,8 @@ class Transaction
 
   belongs_to :user
 
+  default_scope(:default).update(:order => [:date.asc])
+
   def self.create_from_params(params, user)
     t = new
     t.amount = params["amount"].to_f
@@ -41,6 +43,25 @@ class Transaction
       throw t.errors unless t.save
     end
   end
+
+  def previous
+    Transaction.all(user_id: self.user_id, :date.lt => self.date ).last
+  end
+
+  def next
+    Transaction.all(user_id: self.user_id, :date.gt => self.date ).first
+  end
+
+  def last_in_month?
+    @next = self.next
+    if @next.nil?
+      true
+    else
+      self.date.month != @next.date.month
+    end
+end
+
+
 end
 
 class User

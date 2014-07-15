@@ -22,9 +22,10 @@
           %th Target
           %th Reason
           %th Shared?
+          %th Last
           %th Actions
       %tbody
-        - @user.transactions.sort_by(&:date).each do |t|
+        - @user.transactions.each do |t|
           %tr
             %td= t.date.strftime("%d/%m/%Y")
             %td
@@ -39,6 +40,7 @@
                 %span.glyphicon.glyphicon-ok
               - else
                 %span.glyphicon.glyphicon-remove
+            %td= t.last_in_month?
             %td
               %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
                 -# , onsubmit: "return confirm('Are you sure you want to delete?');"}

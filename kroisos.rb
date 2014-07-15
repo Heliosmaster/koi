@@ -53,10 +53,24 @@ post '/transaction/import' do
   redirect to '/'
 end
 
-get '/transaction/:id/edit' do
+get '/transaction/bulk_edit' do
+  @user ||= User.get(session[:user])
+  haml :bulk_edit, layout: :layout
+end
+
+post '/transaction/bulk_edit' do
+  @user ||= User.get(session[:user])
+  params[:transaction].each do |k,v|
+    Transaction.get(k).update_from_params(v)
+  end
+  redirect to "/"
+end
+
+get '/transaction/:id' do
   @transaction = Transaction.get(params[:id])
   haml :edit, layout: :layout
 end
+
 
 put '/transaction/:id' do
   Transaction.get(params[:id]).update_from_params(params[:transaction])

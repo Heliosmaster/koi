@@ -1,10 +1,13 @@
 - if @user
   %div.col-md-10.col-md-offset-1
-    %div.col-md-7
+    %div.col-md-6
       %h2 Transactions
-    %div.pull-right
+    %div.col-md-6.pull-right
       %div.btn-group
-        %a.btn.btn-primary{href: "/transaction/add", style: "margin-bottom:10px;"}
+        %a.btn.btn-warning{href: "/transaction/bulk_edit"}
+          Bulk edit
+          %span.glyphicon.glyphicon-th-list
+        %a.btn.btn-primary{href: "/transaction/add"}
           Add transaction
           %span.glyphicon.glyphicon-plus
         %a.btn.btn-success{href: "/transaction/import"}
@@ -23,8 +26,12 @@
       %tbody
         - @user.transactions.sort_by(&:date).each do |t|
           %tr
-            %td= t.date
-            %td= t.amount
+            %td= t.date.strftime("%d/%m/%Y")
+            %td
+              - if t.amount >= 0
+                %strong{style:"color:limegreen"}= t.amount
+              - else
+                %strong{style: "color:orangered"}= t.amount
             %td= t.target
             %td= t.reason
             %td.text-center
@@ -35,11 +42,11 @@
             %td
               %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
                 -# , onsubmit: "return confirm('Are you sure you want to delete?');"}
-                %a{href: "/transaction/#{t.id}/edit", class:"btn btn-primary"}
+                %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
                   %span.glyphicon.glyphicon-pencil
                 %input{name: "_method", type: "hidden", value: "delete"}
                 %button{type:"submit", class:"btn btn-danger"}
                   %span.glyphicon.glyphicon-trash
- 
+
 - else
   %div.alert.alert-warning Please select a user from the dropdown

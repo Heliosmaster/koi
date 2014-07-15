@@ -22,7 +22,7 @@
     %div.form-group
       %label.col-md-2 Shared
       %div.col-md-10
-        %input{type: "checkbox", name: "shared"}
+        %input{type: "checkbox", value: "t", checked: "#{@transaction.shared}", name: "transaction[shared]"}
     %div.form-group
       %div.col-md-10.col-md-offset-2
         %a{href:"/", class:"btn btn-default"} Back

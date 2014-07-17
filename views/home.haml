@@ -25,14 +25,6 @@
           %th Actions
       %tbody
         - @transactions.each_with_index do |t,i|
-          - @prev = @transactions[i-1]
-          - if t.different_month?(@prev) && i!=0
-            %tr
-              %td
-                %strong= "Total for #{@prev.date.strftime("%m-%Y")}"
-                %td
-                  - balance = @user.monthly_balance(@prev.date.year,@prev.date.month)
-                  %strong{class: balance >= 0 ? "income" : "expense" }= balance
           %tr
             %td= t.date.strftime("%d/%m/%Y")
             %td
@@ -52,6 +44,16 @@
                 %input{name: "_method", type: "hidden", value: "delete"}
                 %button{type:"submit", class:"btn btn-danger"}
                   %span.glyphicon.glyphicon-trash
-
+          - @other = (i == @transactions.length-1 ? t :  @transactions[i+1])
+          - if @other == t || t.different_month?(@other)
+            %tr.info
+              %td
+                %strong= "Total for #{@other.date.strftime("%m-%Y")}"
+                %td{colspan: 2}
+                  - balance = @user.monthly_balance(t.date.year,t.date.month)
+                  %strong{class: balance >= 0 ? "income" : "expense" }= balance
+                %td{colspan: 3}
+                  - shared_balance = @user.shared_monthly_balance(t.date.year,t.date.month)
+                  %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
 - else
   %div.alert.alert-warning Please select a user from the dropdown

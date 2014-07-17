@@ -48,12 +48,13 @@
           - if @other == t || t.different_month?(@other)
             %tr.info
               %td
-                %strong= "Total for #{@other.date.strftime("%m-%Y")}"
+                %strong=  @other.date.strftime("%m-%Y")
                 %td{colspan: 2}
                   - balance = @user.monthly_balance(t.date.year,t.date.month)
                   %strong{class: balance >= 0 ? "income" : "expense" }= balance
                 %td{colspan: 3}
                   - shared_balance = @user.shared_monthly_balance(t.date.year,t.date.month)
+                  %strong Shared:
                   %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
 - else
   %div.alert.alert-warning Please select a user from the dropdown

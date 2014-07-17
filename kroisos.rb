@@ -82,3 +82,8 @@ delete '/transaction/:id' do
   Transaction.get(params[:id]).destroy
   redirect to "/"
 end
+
+get '/balance' do
+  @transactions = Transaction.all(shared: true)
+  haml :balance, layout: :layout
+end

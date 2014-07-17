@@ -1,0 +1,39 @@
+%div.row
+  %div.col-md-6.col-md-offset-3
+    %table.well.table{style: "font-size:200%;"}
+      %thead
+        %tr
+          %td
+          %td Expenses
+          %td Difference
+      %tbody
+        - avg = User.average_expenses
+        - User.each do |user|
+          - bal = user.total_expenses
+          - diff = (bal-avg).round(2)
+          %tr
+            %td= user.name
+            %td
+              %strong= bal
+            %td
+              %strong{class: diff >= 0 ? "income" : "expense" }= diff
+
+%div.row{style: "margin-top:50px;"}
+  %div.col-md-10.col-md-offset-1
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th Date
+          %th Amount
+          %th Target
+          %th Reason
+          %th User
+      %tbody
+        - @transactions.each do |t|
+          %tr
+            %td= t.date.strftime("%d/%m/%Y")
+            %td
+              %strong{class: t.income? ? "income" : "expense" }= t.amount
+            %td= t.target
+            %td= t.reason
+            %td= t.user.name

@@ -22,6 +22,10 @@ class Transaction
     throw t.errors unless t.save
   end
 
+  def income?
+    self.amount >= 0
+  end
+
   def update_from_params(params)
     self.amount = params["amount"].to_f
     self.date = Date.parse(params["date"])
@@ -44,25 +48,13 @@ class Transaction
     end
   end
 
-  def previous
-    Transaction.all(user_id: self.user_id, :date.lt => self.date ).last
+  def different_month?(transaction)
+    self.date.month != transaction.date.month
   end
 
-  def next
-    Transaction.all(user_id: self.user_id, :date.gt => self.date ).first
-  end
-
-  def last_in_month?
-    @next = self.next
-    if @next.nil?
-      true
-    else
-      self.date.month != @next.date.month
-    end
 end
 
 
-end
 
 class User
   include DataMapper::Resource
@@ -70,4 +62,15 @@ class User
   property :name, String, required: true, unique: true
 
   has n, :transactions
+
+  def total_balance
+    transactions.map(&:amount).sum.round(2)
+  end
+
+  def monthly_balance(year,month)
+    start_day = Date.parse("#{year}-#{month}-01")
+    end_day = start_day.next_month-1
+    Transaction.all(date: (start_day..end_day)).map(&:amount).sum.round(2)
+  end
+
 end

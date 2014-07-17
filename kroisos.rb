@@ -22,6 +22,7 @@ set :session_secret, "supersecretphrase"
 
 get '/' do
   @user = User.get(session[:user])
+  @transactions = @user.transactions if @user
   haml :home, layout: :layout
 end
 

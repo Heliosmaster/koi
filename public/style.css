@@ -17,4 +17,9 @@
 .table>tfoot>tr>td {
     vertical-align:middle;
 }
-
+.income {
+    color:limegreen;
+}
+.expense {
+    color:orangered;
+}

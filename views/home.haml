@@ -22,17 +22,21 @@
           %th Target
           %th Reason
           %th Shared?
-          %th Last
           %th Actions
       %tbody
-        - @user.transactions.each do |t|
+        - @transactions.each_with_index do |t,i|
+          - @prev = @transactions[i-1]
+          - if t.different_month?(@prev) && i!=0
+            %tr
+              %td
+                %strong= "Total for #{@prev.date.strftime("%m-%Y")}"
+                %td
+                  - balance = @user.monthly_balance(@prev.date.year,@prev.date.month)
+                  %strong{class: balance >= 0 ? "income" : "expense" }= balance
           %tr
             %td= t.date.strftime("%d/%m/%Y")
             %td
-              - if t.amount >= 0
-                %strong{style:"color:limegreen"}= t.amount
-              - else
-                %strong{style: "color:orangered"}= t.amount
+              %strong{class: t.income? ? "income" : "expense" }= t.amount
             %td= t.target
             %td= t.reason
             %td.text-center
@@ -40,7 +44,6 @@
                 %span.glyphicon.glyphicon-ok
               - else
                 %span.glyphicon.glyphicon-remove
-            %td= t.last_in_month?
             %td
               %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
                 -# , onsubmit: "return confirm('Are you sure you want to delete?');"}

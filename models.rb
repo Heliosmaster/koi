@@ -22,6 +22,14 @@ class Transaction
     throw t.errors unless t.save
   end
 
+  def month
+    self.date.month
+  end
+
+  def year
+    self.date.year
+  end
+
   def income?
     self.amount >= 0
   end
@@ -67,19 +75,16 @@ class User
     transactions(:amount.gte => 0).map(&:amount).sum.round(2)
   end
 
-  def monthly_balance(year,month)
-    start_day = Date.parse("#{year}-#{month}-01")
-    end_day = start_day.next_month-1
-    Transaction.all(date: (start_day..end_day)).map(&:amount).sum.round(2)
-  end
-
-  def shared_monthly_balance(year,month)
-    start_day = Date.parse("#{year}-#{month}-01")
-    end_day = start_day.next_month-1
-    Transaction.all(date: (start_day..end_day), shared: true).map(&:amount).sum.round(2)
-  end
-
   def self.average_expenses
     (User.all.map(&:total_expenses).sum/User.count).round(2)
+  end
+
+  def transactions_by_year_month
+    t = self.transactions.group_by(&:year)
+    grouped_transactions = {}
+    t.each do |year,transactions_in_year|
+      grouped_transactions[year] = transactions_in_year.group_by(&:month)
+    end
+    grouped_transactions
   end
 end

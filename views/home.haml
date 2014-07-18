@@ -50,10 +50,10 @@
               %td
                 %strong=  @other.date.strftime("%m-%Y")
                 %td{colspan: 2}
-                  - balance = @user.monthly_balance(t.date.year,t.date.month)
+                  - balance = @transactions_by_year_month[t.date.year][t.date.month].map(&:amount).sum.round(2)
                   %strong{class: balance >= 0 ? "income" : "expense" }= balance
                 %td{colspan: 3}
-                  - shared_balance = @user.shared_monthly_balance(t.date.year,t.date.month)
+                  - shared_balance = @transactions_by_year_month[t.date.year][t.date.month].select(&:shared).map(&:amount).sum.round(2)
                   %strong Shared:
                   %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
 - else

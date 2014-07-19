@@ -44,14 +44,22 @@ class Transaction
   end
 
   def self.create_from_csv(csv,user,default_shared)
+    @user = user
+    @last_import = @user.last_import
+
     CSV.foreach(csv) do |row|
+      @date = Date.parse(row[2])
       t = new
-      t.date = row[2]
+      t.date = @date
       t.amount = (row[3] == "C" ? row[4].to_f : -row[4].to_f)
       t.reason = row[10]
       t.target = row[6]
-      t.user = user
+      t.user_id = @user.id
       t.shared = default_shared
+      if !@last_import || @last_import < @date
+        @user.last_import = @date
+        @last_import = @date
+      end
       throw t.errors unless t.save
     end
   end
@@ -68,6 +76,7 @@ class User
   include DataMapper::Resource
   property :id, Serial
   property :name, String, required: true, unique: true
+  property :last_import, Date
 
   has n, :transactions
 

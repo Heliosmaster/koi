@@ -54,8 +54,13 @@ class Transaction
       t = new
       t.date = @date
       t.amount = (row[3] == "C" ? row[4].to_f : -row[4].to_f)
-      t.reason = row[10]
-      t.target = row[6]
+      if row[6].empty?
+        t.target = row[10]
+        t.reason = ""
+      else
+        t.target = row[6]
+        t.reason = row[10]
+      end
       t.user_id = @user.id
       t.shared = default_shared
       if !@last_import || @last_import < @date

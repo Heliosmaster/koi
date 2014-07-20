@@ -38,7 +38,7 @@
                 %td= t.target
                 %td= t.reason
                 %td.text-center
-                  %span{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphico-remove" }
+                  %span{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove" }
                 %td
                   %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
                     -# , onsubmit: "return confirm('Are you sure you want to delete?');"}
@@ -49,7 +49,7 @@
                       %span.glyphicon.glyphicon-trash
             %tr.info
               %td
-                %strong=  "Monthly total (#{year}-#{month})"
+                %strong=  Date.parse("#{year}-#{month}-01").strftime("%B %Y")
                 %td
                   - balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
                   %strong{class: balance >= 0 ? "income" : "expense" }= balance
@@ -59,7 +59,7 @@
                   %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
           %tr.success
             %td
-              %strong=  "Yearly total (#{year})"
+              %strong=  "Total #{year}"
               %td
                 - balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum.round(2)
                 %strong{class: balance >= 0 ? "income" : "expense" }= balance

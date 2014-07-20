@@ -6,5 +6,6 @@
     - @transactions.each do |year,transactions_in_year|
       - transactions_in_year.each do |month, t|
         %li.list-group-item
-          %a{href: "/transaction/bulk_edit/#{year}/#{month}"}= "#{year}-#{month}"
+          %a{href: "/transaction/bulk_edit/#{year}/#{month}"}
+            = Date.parse("#{year}-#{month}-01").strftime("%B %Y")
           %span.badge= t.length

@@ -7,16 +7,13 @@
           %td Expenses
           %td ±
       %tbody
-        - avg = User.average_expenses
         - User.each do |user|
-          - bal = user.total_expenses
-          - diff = (bal-avg).round(2)
           %tr
             %td= user.name
             %td
-              %strong= bal
+              %strong= @stats[user.id][:expenses]
             %td
-              %strong{class: diff >= 0 ? "income" : "expense" }= diff
+              %strong{class: @stats[user.id][:difference] >= 0 ? "income" : "expense" }= @stats[user.id][:difference]
 
 %div.row{style: "margin-top:50px;"}
   %div.col-md-10.col-md-offset-1

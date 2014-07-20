@@ -101,5 +101,13 @@ end
 
 get '/balance' do
   @transactions = Transaction.all(shared: true)
+  @stats = {}
+  average = User.average_expenses
+  User.all.each do |user|
+    @stats[user.id] = {}
+    expenses = user.total_expenses
+    @stats[user.id][:expenses] = expenses
+    @stats[user.id][:difference] = (expenses-average).round(2)
+  end
   haml :balance, layout: :layout
 end

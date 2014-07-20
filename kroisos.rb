@@ -61,7 +61,18 @@ end
 
 get '/transaction/bulk_edit' do
   @user ||= User.get(session[:user])
+  @transactions = @user.transactions_by_year_month
   haml :bulk_edit, layout: :layout
+end
+
+get '/transaction/bulk_edit/:year/:month' do
+  @user ||= User.get(session[:user])
+  year = params[:year].to_i
+  month = params[:month].to_i
+  p "YM #{year} #{month}"
+  transactions_ym = @user.transactions_by_year_month
+  @transactions = transactions_ym[year][month]
+  haml :bulk_edit_month, layout: :layout
 end
 
 post '/transaction/bulk_edit' do

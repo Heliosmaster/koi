@@ -1,0 +1,25 @@
+%form{action: "/transaction/bulk_edit", method: "post", class: "form-horizontal"}
+  %div.col-md-10.col-md-offset-1
+    %table.table.table-bordered.table-striped
+      %tr
+        %th Date
+        %th Amount
+        %th Target
+        %th Reason
+        %th Shared?
+      - @transactions.each do |t|
+        %tr
+          %td
+            %input{type: "date", class: "form-control", value:"#{t.date}", name: "transaction[#{t.id}][date]"}
+          %td
+            %input{type: "number", class: "form-control", step: "0.5", value: "#{t.amount}", name: "transaction[#{t.id}][amount]"}
+          %td
+            %input{type: "text", class: "form-control", value: "#{t.target}", name: "transaction[#{t.id}][target]"}
+          %td
+            %input{type: "text", class: "form-control", value: "#{t.reason}", name: "transaction[#{t.id}][reason]"}
+          %td
+            %input{type: "checkbox", value: "t", name: "transaction[#{t.id}][shared]"}
+  %div.col-md-1
+    %div.col-md-10.col-md-offset-2
+      %a{href:"/", class:"btn btn-default"} Back
+      %button{type: "submit", class: "btn btn-primary"} Update

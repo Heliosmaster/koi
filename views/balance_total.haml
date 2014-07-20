@@ -1,0 +1,26 @@
+%div.col-md-10.col-md-offset-1
+  %div.col-md-8
+    %h2 Total shared transactions
+  %div.col-md-4
+    %div.btn-group.pull-right
+      %a.btn.btn-default{href:"/balance"} Back
+
+%div.row{style: "margin-top:50px;"}
+  %div.col-md-10.col-md-offset-1
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th Date
+          %th Amount
+          %th Target
+          %th Reason
+          %th User
+      %tbody
+        - @transactions.each do |t|
+          %tr
+            %td= t.date.strftime("%d/%m/%Y")
+            %td
+              %strong{class: t.income? ? "income" : "expense" }= t.amount
+            %td= t.target
+            %td= t.reason
+            %td= t.user.name

@@ -111,3 +111,16 @@ get '/balance' do
   end
   haml :balance, layout: :layout
 end
+
+get '/balance/:year/:month' do
+  start_day = Date.parse("#{params[:year]}-#{params[:month]}-01")
+  @month_year = start_day.strftime("%B %Y")
+  end_day = start_day.next_month-1
+  @transactions = Transaction.all(date: (start_day..end_day), shared: true)
+  haml :balance_monthly, layout: :layout
+end
+
+get '/balance/all' do
+  @transactions = Transaction.all(shared: true)
+  haml :balance_all, layout: :layout
+end

@@ -100,7 +100,15 @@ delete '/transaction/:id' do
 end
 
 get '/balance' do
-  @transactions = Transaction.all(shared: true)
+  @transactions = Transaction.all_shared_into_hash
+  @month_names_count = []
+  @transactions.each do |year,t_by_year|
+    t_by_year.each do |month, t_by_year_month|
+      @month_names_count << {name: Date.parse("#{year}-#{month}-01").strftime("%B %Y"),
+        url: "/balance/#{year}/#{month}",
+        count: t_by_year_month.length}
+    end
+  end
   @stats = {}
   average = User.average_expenses
   User.all.each do |user|

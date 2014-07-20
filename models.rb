@@ -75,6 +75,15 @@ class Transaction
     self.date.month != transaction.date.month
   end
 
+  def self.all_shared_into_hash
+    t = Transaction.all(shared: true).group_by(&:year)
+    grouped_transactions = {}
+    t.each do |year,transactions_in_year|
+      grouped_transactions[year] = transactions_in_year.group_by(&:month)
+    end
+    grouped_transactions
+  end
+
 end
 
 

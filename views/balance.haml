@@ -15,22 +15,13 @@
             %td
               %strong{class: @stats[user.id][:difference] >= 0 ? "income" : "expense" }= @stats[user.id][:difference]
 
-%div.row{style: "margin-top:50px;"}
-  %div.col-md-10.col-md-offset-1
-    %table.table.table-bordered.table-striped
-      %thead
-        %tr
-          %th Date
-          %th Amount
-          %th Target
-          %th Reason
-          %th User
-      %tbody
-        - @transactions.each do |t|
-          %tr
-            %td= t.date.strftime("%d/%m/%Y")
-            %td
-              %strong{class: t.income? ? "income" : "expense" }= t.amount
-            %td= t.target
-            %td= t.reason
-            %td= t.user.name
+%div.row
+  %div.col-md-2.col-md-offset-5
+    %a.btn.btn-success{href: "/balance/all"} All shared transactions
+%div.row{style: "margin-top:40px;"}
+  %div.col-md-6.col-md-offset-3
+    - @month_names_count.each do |e|
+      %div.col-md-3
+        %a.btn.btn-primary{href: "#{e[:url]}"}
+          = "#{e[:name]}"
+          %span.badge= "#{e[:count]}"

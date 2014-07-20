@@ -88,7 +88,7 @@ class User
   has n, :transactions
 
   def total_expenses
-    transactions(:amount.gte => 0).map(&:amount).sum.round(2)
+    transactions(:amount.lte => 0).map(&:amount).sum.abs.round(2)
   end
 
   def self.average_expenses

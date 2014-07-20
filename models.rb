@@ -1,11 +1,13 @@
 class Transaction
   include DataMapper::Resource
   property :id, Serial
-  property :amount, Float, required: true
-  property :date, Date, required: true
-  property :target, String
+  property :amount, Float, required: true, unique_index: :date_amount_target
+  property :date, Date, required: true, unique_index: :date_amount_target
+  property :target, String, required: true, unique_index: :date_amount_target
   property :reason, String
   property :shared, Boolean, default: true
+
+  validates_uniqueness_of :amount, :scope => [:date, :target]
 
   belongs_to :user
 

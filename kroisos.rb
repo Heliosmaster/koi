@@ -25,6 +25,7 @@ get '/' do
   if @user
     @transactions = @user.transactions
     @transactions_by_year_month = @user.transactions_by_year_month
+    @last_import = @user.last_import
   end
 
   haml :home, layout: :layout

@@ -14,8 +14,9 @@
           Import transactions
           %span.glyphicon.glyphicon-upload
       %div.pull-right{style:"margin-top:20px;"}
-        Last imported transaction:
-        = @user.last_import.strftime("%d/%m/%Y")
+        - if @last_import
+          Last imported transaction:
+          = @last_import.strftime("%d/%m/%Y")
   %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
     %table.table.table-bordered.table-striped
       %thead

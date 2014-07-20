@@ -28,37 +28,44 @@
           %th Shared?
           %th Actions
       %tbody
-        - @transactions.each_with_index do |t,i|
-          %tr
-            %td= t.date.strftime("%d/%m/%Y")
-            %td
-              %strong{class: t.income? ? "income" : "expense" }= t.amount
-            %td= t.target
-            %td= t.reason
-            %td.text-center
-              - if t.shared
-                %span.glyphicon.glyphicon-ok
-              - else
-                %span.glyphicon.glyphicon-remove
-            %td
-              %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
-                -# , onsubmit: "return confirm('Are you sure you want to delete?');"}
-                %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
-                  %span.glyphicon.glyphicon-pencil
-                %input{name: "_method", type: "hidden", value: "delete"}
-                %button{type:"submit", class:"btn btn-danger"}
-                  %span.glyphicon.glyphicon-trash
-          - @other = (i == @transactions.length-1 ? t :  @transactions[i+1])
-          - if @other == t || t.different_month?(@other)
+        - @transactions_by_year_month.each do |year,t_by_month|
+          - t_by_month.each do |month,transactions|
+            - transactions.each do |t|
+              %tr
+                %td= t.date.strftime("%d/%m/%Y")
+                %td
+                  %strong{class: t.income? ? "income" : "expense" }= t.amount
+                %td= t.target
+                %td= t.reason
+                %td.text-center
+                  %span{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphico-remove" }
+                %td
+                  %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
+                    -# , onsubmit: "return confirm('Are you sure you want to delete?');"}
+                    %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
+                      %span.glyphicon.glyphicon-pencil
+                    %input{name: "_method", type: "hidden", value: "delete"}
+                    %button{type:"submit", class:"btn btn-danger"}
+                      %span.glyphicon.glyphicon-trash
             %tr.info
               %td
-                %strong=  @other.date.strftime("%m-%Y")
-                %td{colspan: 2}
-                  - balance = @transactions_by_year_month[t.date.year][t.date.month].map(&:amount).sum.round(2)
+                %strong=  "Monthly total (#{year}-#{month})"
+                %td
+                  - balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
                   %strong{class: balance >= 0 ? "income" : "expense" }= balance
-                %td{colspan: 3}
-                  - shared_balance = @transactions_by_year_month[t.date.year][t.date.month].select(&:shared).map(&:amount).sum.round(2)
+                %td{colspan: 4}
+                  - shared_balance = @transactions_by_year_month[year][month].select(&:shared).map(&:amount).sum.round(2)
                   %strong Shared:
                   %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
+          %tr.success
+            %td
+              %strong=  "Yearly total (#{year})"
+              %td
+                - balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum.round(2)
+                %strong{class: balance >= 0 ? "income" : "expense" }= balance
+              %td{colspan: 4}
+                - shared_balance = @transactions_by_year_month[year].values.flatten.select(&:shared).map(&:amount).sum.round(2)
+                %strong Shared:
+                %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
 - else
   %div.alert.alert-warning Please select a user from the dropdown

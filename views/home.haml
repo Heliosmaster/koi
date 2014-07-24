@@ -17,7 +17,7 @@
         - if @last_import
           Last imported transaction:
           = @last_import.strftime("%d/%m/%Y")
-  %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
+          %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
     %table.table.table-bordered.table-striped
       %thead
         %tr
@@ -38,12 +38,12 @@
                 %td= t.target
                 %td= t.reason
                 %td.text-center
-                  %span{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove" }
+                  %button.btn.btn-default.shared-icon{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove", data: {url: "/transaction/#{t.id}/toggle_shared", shared: "#{t.shared}"}}
                 %td
+                  %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
+                    %span.glyphicon.glyphicon-pencil
                   %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
                     -# , onsubmit: "return confirm('Are you sure you want to delete?');"}
-                    %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
-                      %span.glyphicon.glyphicon-pencil
                     %input{name: "_method", type: "hidden", value: "delete"}
                     %button{type:"submit", class:"btn btn-danger"}
                       %span.glyphicon.glyphicon-trash
@@ -69,3 +69,5 @@
                 %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
 - else
   %div.alert.alert-warning Please select a user from the dropdown
+
+%script{src: "home.js", type: "text/javascript"}

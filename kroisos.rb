@@ -4,6 +4,8 @@ require 'data_mapper'
 require 'haml'
 require 'date'
 require 'csv'
+require 'coffee-script'
+require 'therubyracer'
 
 require_relative 'models'
 # If you want the logs displayed you have to do this before the call to setup
@@ -29,6 +31,10 @@ get '/' do
   end
 
   haml :home, layout: :layout
+end
+
+get '/home.js' do
+  coffee :home
 end
 
 post '/select_user' do
@@ -86,6 +92,11 @@ end
 get '/transaction/:id' do
   @transaction = Transaction.get(params[:id])
   haml :edit, layout: :layout
+end
+
+post '/transaction/:id/toggle_shared' do
+  transaction = Transaction.get(params[:id])
+  transaction.update(shared: !transaction.shared)
 end
 
 

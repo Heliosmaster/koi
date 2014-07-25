@@ -141,5 +141,5 @@ end
 
 get '/balance/all' do
   @transactions = Transaction.all(shared: true)
-  haml :balance_all, layout: :layout
+  haml :balance_total, layout: :layout
 end

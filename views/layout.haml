@@ -22,8 +22,14 @@
       %div.collapse.navbar-collapse
         %ul.nav.navbar-nav
           %li
-            %a{href:"/balance"} Balance
-
+            %a{href:"/balance"}
+              Balance
+              - if session[:user]
+                - average = User.average_expenses
+                - difference = (User.get(session[:user]).total_expenses-average).round(2)
+                (
+                %span{class: difference >=0 ? "income" : "expense" }= difference
+                )
 
         %div.navbar-right
           %form{action: "/select_user", method: "post", class:"navbar-form"}

@@ -21,8 +21,8 @@
           %td
             %input{type: "number", class: "form-control", step: "0.5", value: "#{t.amount}", name: "transaction[#{t.id}][amount]"}
           %td
-            %input{type: "text", rows: 2, class: "form-control", value: "#{t.target}", name: "transaction[#{t.id}][target]"}
+            %textarea{rows: 2, class: "form-control", value: "#{t.target}", name: "transaction[#{t.id}][target]"}
           %td
-            %input{type: "text", class: "form-control", value: "#{t.reason}", name: "transaction[#{t.id}][reason]"}
+            %textarea{type: "text", class: "form-control", value: "#{t.reason}", name: "transaction[#{t.id}][reason]"}
           %td
             %input{type: "checkbox", value: "t", name: "transaction[#{t.id}][shared]", checked: t.shared}

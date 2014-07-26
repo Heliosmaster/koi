@@ -24,14 +24,17 @@ set :session_secret, "supersecretphrase"
 
 before do
   @user ||= User.get(session[:user])
+  if @user
+    @total_shared_expense ||= @user.total_shared_expenses
+    @difference ||= @user.difference
+  end
 end
 
 get '/' do
-  @user ||= User.get(session[:user])
   if @user
     @transactions = @user.transactions
     @transactions_by_year_month = @user.transactions_by_year_month
-    @last_import = @user.last_import
+    @last_import ||= @user.last_import
   end
 
   haml :home, layout: :layout
@@ -48,7 +51,6 @@ get '/transaction/add' do
 end
 
 post '/transaction/add' do
-  @user ||= User.get(session[:user])
   Transaction.create_from_params(params[:transaction], @user)
   @user.update_values
   redirect to '/'
@@ -59,27 +61,23 @@ get '/transaction/csv' do
 end
 
 post '/transaction/import' do
-  @user ||= User.get(session[:user])
   Transaction.create_from_csv(params[:file][:tempfile], @user, params[:shared])
   @user.update_values
   redirect to '/'
 end
 
 post '/transaction/export' do
-#  content_type 'application/csv'
   attachment "Kroisos-#{Date.today}.txt"
- @user.export_to_csv
+  @user.export_to_csv
   #  redirect to '/'
 end
 
 get '/transaction/bulk_edit' do
-  @user ||= User.get(session[:user])
   @transactions = @user.transactions_by_year_month
   haml :bulk_edit, layout: :layout
 end
 
 get '/transaction/bulk_edit/:year/:month' do
-  @user ||= User.get(session[:user])
   year = params[:year].to_i
   month = params[:month].to_i
   transactions_ym = @user.transactions_by_year_month
@@ -91,7 +89,6 @@ post '/transaction/bulk_edit' do
   params[:transaction].each do |k,v|
     Transaction.get(k).update_from_params(v)
   end
-  @user ||= User.get(session[:user])
   @user.update_values
   redirect to "/"
 end

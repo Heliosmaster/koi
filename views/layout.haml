@@ -23,9 +23,9 @@
           %li
             %a{href:"/balance"}
               Balance
-              - if @user
+              - if @difference
                 (
-                %span{class: @user.difference >=0 ? "income" : "expense" }= @user.difference
+                %span{class: @difference >=0 ? "income" : "expense" }= @difference
                 )
 
         %div.navbar-right

@@ -2,12 +2,17 @@
 %a{href:"/", class:"btn btn-default"} Back
 %div.col-md-6.col-md-offset-3
   %h2 Import from CSV
-  %form{action: "/transaction/import", method: "post", class: "form-horizontal"}
+  %form{action: "/transaction/import", method: "post", enctype: "multipart/form-data",  class: "form-horizontal"}
     %div.form-group
       %label.col-md-2 CSV file
       %div.col-md-10
-        %input.file-inputs{type: "file"}
-    %button.btn.btn-primary{type: "submit"} Import
+        %input.file-inputs{type: "file", name: "file"}
+    %div.form-group
+      %div.col-md-10.col-md-offset-2
+        %label Default shared for imported transactions
+        %input{type: "checkbox", value: "t", checked: true, name: "shared"}
+    %div.form-group
+      %button{type: "submit", class: "btn btn-primary"} Submit
 
 %div.col-md-6.col-md-offset-3
   %h2 Export to CSV

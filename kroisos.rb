@@ -54,8 +54,8 @@ post '/transaction/add' do
   redirect to '/'
 end
 
-get '/transaction/import' do
-  haml :import, layout: :layout
+get '/transaction/csv' do
+  haml :csv, layout: :layout
 end
 
 post '/transaction/import' do
@@ -63,6 +63,13 @@ post '/transaction/import' do
   Transaction.create_from_csv(params[:file][:tempfile], @user, params[:shared])
   @user.update_values
   redirect to '/'
+end
+
+post '/transaction/export' do
+#  content_type 'application/csv'
+  attachment "Kroisos-#{Date.today}.txt"
+ @user.export_to_csv
+  #  redirect to '/'
 end
 
 get '/transaction/bulk_edit' do

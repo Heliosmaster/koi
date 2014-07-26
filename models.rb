@@ -71,6 +71,10 @@ class Transaction
     end
   end
 
+  def to_csv_row
+    "#{self.date.strftime("%d/%m/%Y")},#{self.amount},#{self.target},#{self.reason},#{self.shared}"
+  end
+
   def different_month?(transaction)
     self.date.month != transaction.date.month
   end
@@ -123,6 +127,11 @@ class User
       grouped_transactions[year] = transactions_in_year.group_by(&:month)
     end
     grouped_transactions
+  end
+
+  def export_to_csv
+    "Date,amount,target,reason,shared" + "\n" +
+    self.transactions.map(&:to_csv_row).join("\n") + "\n"
   end
 
   def self.expenses_and_differences

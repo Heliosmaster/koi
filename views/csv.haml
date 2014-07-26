@@ -1,0 +1,15 @@
+%a{href:"/", class:"btn btn-default"} Back
+%div.col-md-6.col-md-offset-3
+  %h2 Import from CSV
+  %form{action: "/transaction/import", method: "post", class: "form-horizontal"}
+    %div.form-group
+      %label.col-md-2 CSV file
+      %div.col-md-10
+        %input{type: "file"}
+    %button.btn.btn-primary{type: "submit"} Import
+
+%div.col-md-6.col-md-offset-3
+  %h2 Export to CSV
+  %form{action: "/transaction/export", method: "post"}
+    %button.btn.btn-primary{type: "submit"} Export
+  

@@ -162,3 +162,7 @@ end
 get '/home.js' do
   coffee :home
 end
+
+get '/input.js' do
+  coffee :input
+end

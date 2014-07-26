@@ -54,17 +54,17 @@
                   - balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
                   %strong{class: balance >= 0 ? "income" : "expense" }= balance
                 %td{colspan: 4}
-                  - shared_balance = @transactions_by_year_month[year][month].select(&:shared).map(&:amount).sum.round(2)
+                  - shared_balance = @transactions_by_year_month[year][month].select(&:shared).map(&:amount).sum
                   %strong Shared:
                   %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
           %tr.success
             %td
               %strong=  "Total #{year}"
               %td
-                - balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum.round(2)
+                - balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum
                 %strong{class: balance >= 0 ? "income" : "expense" }= balance
               %td{colspan: 4}
-                - shared_balance = @transactions_by_year_month[year].values.flatten.select(&:shared).map(&:amount).sum.round(2)
+                - shared_balance = @transactions_by_year_month[year].values.flatten.select(&:shared).map(&:amount).sum
                 %strong Shared:
                 %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
 - else

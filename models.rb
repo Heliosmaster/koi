@@ -1,7 +1,7 @@
 class Transaction
   include DataMapper::Resource
   property :id, Serial
-  property :amount, Float, required: true, unique_index: :date_amount_target
+  property :amount, Decimal, precision: 8, scale: 2, required: true, unique_index: :date_amount_target
   property :date, Date, required: true, unique_index: :date_amount_target
   property :target, String, required: true, unique_index: :date_amount_target
   property :reason, String
@@ -87,21 +87,33 @@ class Transaction
 end
 
 
-
 class User
   include DataMapper::Resource
   property :id, Serial
   property :name, String, required: true, unique: true
   property :last_import, Date
+  property :total_shared_expenses, Decimal, precision: 8, scale: 2, default: 0
+  property :difference, Decimal, precision: 8, scale: 2, default: 0
 
   has n, :transactions
 
-  def total_expenses
-    transactions(:amount.lte => 0).map(&:amount).sum.abs.round(2)
+  def update_total_shared_expenses
+    self.total_shared_expenses = transactions(shared: true, :amount.lte => 0).map(&:amount).sum.abs.round(2)
+    self.save!
+  end
+
+  def update_differences
+    self.difference = (total_shared_expenses-User.average_expenses)
+    self.save!
+  end
+
+  def update_values
+    self.update_total_shared_expenses
+    self.update_differences
   end
 
   def self.average_expenses
-    (User.all.map(&:total_expenses).sum/User.count).round(2)
+    (User.all.map(&:total_shared_expenses).sum/User.count)
   end
 
   def transactions_by_year_month
@@ -111,5 +123,24 @@ class User
       grouped_transactions[year] = transactions_in_year.group_by(&:month)
     end
     grouped_transactions
+  end
+
+  def self.expenses_and_differences
+    stats = {}
+    User.all.each do |user|
+      stats[user.id] = {}
+      stats[user.id][:expenses] = user.total_shared_expenses
+      stats[user.id][:difference] = user.difference
+    end
+    stats
+  end
+
+end
+
+class BigDecimal
+  old_to_s = instance_method :to_s
+
+  define_method :to_s do |param='F'|
+    old_to_s.bind(self).(param)
   end
 end

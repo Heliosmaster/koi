@@ -53,22 +53,56 @@
               %td
                 %strong=  Date.parse("#{year}-#{month}-01").strftime("%B %Y")
                 %td
-                  - balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
-                  %strong{class: balance >= 0 ? "income" : "expense" }= balance
-                %td{colspan: 4}
-                  - shared_balance = @transactions_by_year_month[year][month].select(&:shared).map(&:amount).sum
+                  - monthly_balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
+                  %strong{class: monthly_balance >= 0 ? "income" : "expense" }= monthly_balance
+                %td
+                  - monthly_income = @transactions_by_year_month[year][month].select{|t| t.amount >= 0}.map(&:amount).sum
+                  - monthly_expense = @transactions_by_year_month[year][month].select{|t| t.amount < 0}.map(&:amount).sum
+                  (
+                  %strong.income= "+#{monthly_income}"
+                  = "/"
+                  %strong.expense= monthly_expense
+                  )
+
+                %td{colspan: 3}
+                  - monthly_shared_balance = @transactions_by_year_month[year][month].select(&:shared).map(&:amount).sum
                   %strong Shared:
-                  %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
+                  %strong{class: monthly_shared_balance >= 0 ? "income" : "expense" }= monthly_shared_balance
+                  - monthly_shared_income = @transactions_by_year_month[year][month].select{|t| t.amount >= 0 && t.shared}.map(&:amount).sum
+                  - monthly_shared_expense = @transactions_by_year_month[year][month].select{|t| t.amount < 0 && t.shared}.map(&:amount).sum
+                  (
+                  %strong.income= "+#{monthly_shared_income}"
+                  = "/"
+                  %strong.expense= monthly_shared_expense
+                  )
+
           %tr.success
             %td
               %strong=  "Total #{year}"
               %td
-                - balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum
-                %strong{class: balance >= 0 ? "income" : "expense" }= balance
-              %td{colspan: 4}
-                - shared_balance = @transactions_by_year_month[year].values.flatten.select(&:shared).map(&:amount).sum
-                %strong Shared:
-                %strong{class: shared_balance >= 0 ? "income" : "expense" }= shared_balance
+                - yearly_balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum
+                %strong{class: yearly_balance >= 0 ? "income" : "expense" }= yearly_balance
+              %td
+                - yearly_income = @transactions_by_year_month[year].values.flatten.select{|t| t.amount >= 0}.map(&:amount).sum
+                - yearly_expense = @transactions_by_year_month[year].values.flatten.select{|t| t.amount < 0}.map(&:amount).sum
+                (
+                %strong.income= "+#{yearly_income}"
+                = "/"
+                %strong.expense= yearly_expense
+                )
+
+                %td{colspan: 3}
+                  - yearly_shared_balance = @transactions_by_year_month[year].values.flatten.select(&:shared).map(&:amount).sum
+                  %strong Shared:
+                  %strong{class: yearly_shared_balance >= 0 ? "income" : "expense" }= yearly_shared_balance
+                  - yearly_shared_income = @transactions_by_year_month[year].values.flatten.select{|t| t.amount >= 0 && t.shared}.map(&:amount).sum
+                  - yearly_shared_expense = @transactions_by_year_month[year].values.flatten.select{|t| t.amount < 0 && t.shared}.map(&:amount).sum
+                  (
+                  %strong.income= "+#{yearly_shared_income}"
+                  = "/"
+                  %strong.expense= yearly_shared_expense
+                  )
+
 - else
   %div.alert.alert-warning Please select a user from the dropdown
 

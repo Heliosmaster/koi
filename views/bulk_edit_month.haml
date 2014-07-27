@@ -4,7 +4,7 @@
       %h2 Editing transactions
     %div.col-md-6
       %div.btn-group.pull-right
-        %a.btn.btn-default{href:"/"} Back
+        %a.btn.btn-default{href:"/transaction/bulk_edit"} Back
         %button.btn.btn-primary{type: "submit", class: "btn btn-primary"} Update
   %div.col-md-10.col-md-offset-1
     %table.table.table-bordered.table-striped
@@ -16,13 +16,13 @@
         %th Shared?
       - @transactions.each do |t|
         %tr
-          %td
+          %td.col-md-1
             %input{type: "date", class: "form-control", value:"#{t.date}", name: "transaction[#{t.id}][date]"}
-          %td
+          %td.col-md-2
             %input{type: "number", class: "form-control", step: "0.01", value: "#{t.amount}", name: "transaction[#{t.id}][amount]"}
-          %td
+          %td.col-md-4
             %textarea{rows: 2, class: "form-control", name: "transaction[#{t.id}][target]"}= t.target
-          %td
+          %td.col-md-4
             %textarea{type: "text", class: "form-control", name: "transaction[#{t.id}][reason]"}= t.reason
-          %td
+          %td.col-md-1
             %input{type: "checkbox", value: "t", name: "transaction[#{t.id}][shared]", checked: t.shared}

@@ -16,19 +16,19 @@
         %tr{id: "conflict-#{i}"}
           - if t.id
             %input{type: "hidden", name: "transaction[#{i}][id]", value: t.id}
-          %td
-            %input{type: "date", class: "form-control", value:"#{t.date}", name: "transaction[#{i}][date]"}
-          %td
-            %input{type: "number", class: "form-control", width: "150px;", step: "0.01", value: "#{t.amount}", name: "transaction[#{i}][amount]"}
-          %td
+          %td.col-md-1
+            %input{type: "date", value:"#{t.date}", name: "transaction[#{i}][date]"}
+          %td.col-md-2
+            %input{type: "number", class: "form-control", step: "0.01", value: "#{t.amount}", name: "transaction[#{i}][amount]"}
+          %td.col-md-3
             %textarea{class: "form-control", name: "transaction[#{i}][target]"}= t.target
-          %td
+          %td.col-md-2
             %textarea{type: "text", class: "form-control", name: "transaction[#{i}][reason]"}= t.reason
-          %td
+          %td.col-md-1
             %input{type: "checkbox", value: "t", name: "transaction[#{i}][shared]", checked: t.shared}
-          %td
+          %td.col-md-1
             %span.btn.btn-danger.glyphicon.glyphicon-trash.discard-conflict{data: {id: "#{i}"}}
-          %td
+          %td.col-md-1
             - e.full_messages.each do |msg|
               %p.text-danger= msg
   %div.col-md-12

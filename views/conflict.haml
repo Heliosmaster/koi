@@ -29,9 +29,8 @@
           %td
             %span.btn.btn-danger.glyphicon.glyphicon-trash.discard-conflict{data: {id: "#{i}"}}
           %td
-            %ul
-              - e.full_messages.each do |msg|
-                %li.text-danger= msg
+            - e.full_messages.each do |msg|
+              %p.text-danger= msg
   %div.col-md-12
     %div.col-md-6
       %div.btn-group.pull-right

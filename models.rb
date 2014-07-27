@@ -7,7 +7,7 @@ class Transaction
   property :reason, String
   property :shared, Boolean, default: true
 
-  validates_uniqueness_of :amount, :scope => [:date, :target]
+  validates_uniqueness_of :amount, :scope => [:date, :target], message: "Date/Amount/Target already present"
 
   belongs_to :user
 

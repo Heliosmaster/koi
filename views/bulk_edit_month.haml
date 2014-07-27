@@ -19,7 +19,7 @@
           %td
             %input{type: "date", class: "form-control", value:"#{t.date}", name: "transaction[#{t.id}][date]"}
           %td
-            %input{type: "number", class: "form-control", step: "0.5", value: "#{t.amount}", name: "transaction[#{t.id}][amount]"}
+            %input{type: "number", class: "form-control", step: "0.01", value: "#{t.amount}", name: "transaction[#{t.id}][amount]"}
           %td
             %textarea{rows: 2, class: "form-control", value: "#{t.target}", name: "transaction[#{t.id}][target]"}
           %td

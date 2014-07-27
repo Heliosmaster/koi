@@ -21,7 +21,7 @@ class Transaction
     t.reason = params["reason"]
     t.target = params["target"]
     t.shared = params["shared"]
-    throw t.errors unless t.save
+    t.errors unless t.save
   end
 
   def month
@@ -42,12 +42,13 @@ class Transaction
     self.reason = params["reason"]
     self.target = params["target"]
     self.shared = params["shared"]
-    throw self.errors unless self.save
+    self.errors unless self.save
   end
 
   def self.create_from_csv(csv,user,default_shared)
     @user = user
     @last_import = @user.last_import
+    errors = []
 
     CSV.foreach(csv) do |row|
       @date = Date.parse(row[2])
@@ -67,8 +68,9 @@ class Transaction
         @user.last_import = @date
         @last_import = @date
       end
-      throw t.errors unless t.save
+      errors << t.errors unless t.save
     end
+    errors
   end
 
   def to_csv_row
@@ -98,7 +100,6 @@ class User
   property :last_import, Date
   property :total_shared_expenses, Decimal, precision: 8, scale: 2, default: 0
   property :difference, Decimal, precision: 8, scale: 2, default: 0
-
   has n, :transactions
 
   def update_total_shared_expenses
@@ -131,7 +132,7 @@ class User
 
   def export_to_csv
     "Date,amount,target,reason,shared" + "\n" +
-    self.transactions.map(&:to_csv_row).join("\n") + "\n"
+      self.transactions.map(&:to_csv_row).join("\n") + "\n"
   end
 
   def self.expenses_and_differences

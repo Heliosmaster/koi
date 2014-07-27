@@ -61,10 +61,67 @@ get '/transaction/csv' do
 end
 
 post '/transaction/import' do
-  Transaction.create_from_csv(params[:file][:tempfile], @user, params[:shared])
+  @errors = Transaction.create_from_csv(params[:file][:tempfile], @user, params[:shared])
   @user.update_values
-  redirect to '/'
+  if @errors.empty?
+    redirect to '/'
+  else
+    haml :conflict, layout: :layout
+  end
 end
+
+post '/transaction/conflict' do
+  @errors = []
+  if params["transaction"].nil?
+    redirect to "/"
+  else
+    params["transaction"].each do |index, params_for_transaction|
+      if params_for_transaction["id"]
+        p "UPDATING #{params_for_transaction["id"]}"
+        error = Transaction.get(params_for_transaction["id"]).update_from_params(params_for_transaction)
+      else
+        p "CREATING NEW"
+        error = Transaction.create_from_params(params_for_transaction, @user)
+      end
+      @errors << error unless error.nil?
+    end
+    @user.update_values
+    if @errors.empty?
+      redirect to '/'
+    else
+      haml :conflict, layout: :layout
+    end
+  end
+
+end
+
+post '/transaction/bulk_edit' do
+  @errors = []
+  params[:transaction].each do |k,v|
+    error = Transaction.get(k).update_from_params(v)
+    @errors << error unless error.nil?
+  end
+  p @errors
+  @user.update_values
+  if @errors.empty?
+    redirect to "/"
+  else
+    haml :conflict, layout: :layout
+  end
+end
+
+put '/transaction/:id' do
+  transaction = Transaction.get(params[:id])
+  error = transaction.update_from_params(params[:transaction])
+  transaction.user.update_values
+  if error
+    @errors = [error]
+    haml :conflict, layout: :layout
+  else
+  redirect to "/"
+  end
+end
+
 
 post '/transaction/export' do
   attachment "Kroisos-#{Date.today}.txt"
@@ -85,13 +142,6 @@ get '/transaction/bulk_edit/:year/:month' do
   haml :bulk_edit_month, layout: :layout
 end
 
-post '/transaction/bulk_edit' do
-  params[:transaction].each do |k,v|
-    Transaction.get(k).update_from_params(v)
-  end
-  @user.update_values
-  redirect to "/"
-end
 
 
 # Modifying a transaction
@@ -106,12 +156,6 @@ post '/transaction/:id/toggle_shared' do
   transaction.user.update_values
 end
 
-put '/transaction/:id' do
-  transaction = Transaction.get(params[:id])
-  transaction = update_from_params(params[:transaction])
-  transaction.user.update_values
-  redirect to "/"
-end
 
 delete '/transaction/:id' do
   transaction = Transaction.get(params[:id])
@@ -162,4 +206,8 @@ end
 
 get '/input.js' do
   coffee :input
+end
+
+get '/conflict.js' do
+  coffee :conflict
 end

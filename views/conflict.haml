@@ -1,0 +1,40 @@
+%div.alert.alert-dismissable.alert-danger
+  Some of the selected transaction could not be imported. Please review and correct / discard them.
+%form{action: "/transaction/conflict", method: "post", class: "form-horizontal"}
+  %div.col-md-12
+    %table.table.table-bordered.table-striped
+      %tr
+        %th Date
+        %th Amount
+        %th Target
+        %th Reason
+        %th Shared?
+        %th Discard
+        %th Error
+      - @errors.each_with_index do |e,i|
+        - t = e.resource
+        %tr{id: "conflict-#{i}"}
+          - if t.id
+            %input{type: "hidden", name: "transaction[#{i}][id]", value: t.id}
+          %td
+            %input{type: "date", class: "form-control", value:"#{t.date}", name: "transaction[#{i}][date]"}
+          %td
+            %input{type: "number", class: "form-control", width: "150px;", step: "0.01", value: "#{t.amount}", name: "transaction[#{i}][amount]"}
+          %td
+            %textarea{class: "form-control", name: "transaction[#{i}][target]"}= t.target
+          %td
+            %textarea{type: "text", class: "form-control", name: "transaction[#{i}][reason]"}= t.reason
+          %td
+            %input{type: "checkbox", value: "t", name: "transaction[#{i}][shared]", checked: t.shared}
+          %td
+            %span.btn.btn-danger.glyphicon.glyphicon-trash.discard-conflict{data: {id: "#{i}"}}
+          %td
+            %ul
+              - e.full_messages.each do |msg|
+                %li.text-danger= msg
+  %div.col-md-12
+    %div.col-md-6
+      %div.btn-group.pull-right
+        %button.btn.btn-primary{type: "submit", class: "btn btn-primary"} Proceed
+
+%script{src: "/conflict.js", type: "text/javascript"}

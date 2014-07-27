@@ -28,7 +28,7 @@
           %th Target
           %th Reason
           %th Shared?
-          %th Actions
+          %th{style: "min-width:120px;"} Actions
       %tbody
         - @transactions_by_year_month.each do |year,t_by_month|
           - t_by_month.each do |month,transactions|
@@ -42,13 +42,13 @@
                 %td.text-center
                   %button.btn.btn-default.shared-icon{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove", data: {url: "/transaction/#{t.id}/toggle_shared", shared: "#{t.shared}"}}
                 %td
-                  %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
-                    %span.glyphicon.glyphicon-pencil
-                  %form{action: "/transaction/#{t.id}", method: "post", class:"btn-group"}
-                    -# , onsubmit: "return confirm('Are you sure you want to delete?');"}
+                  %form{action: "/transaction/#{t.id}", method: "post"}
                     %input{name: "_method", type: "hidden", value: "delete"}
-                    %button{type:"submit", class:"btn btn-danger"}
-                      %span.glyphicon.glyphicon-trash
+                    %div.btn-group
+                      %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
+                        %span.glyphicon.glyphicon-pencil
+                      %button.btn.btn-danger{type:"submit", class:"btn btn-danger"}
+                        %span.glyphicon.glyphicon-trash
             %tr.info
               %td
                 %strong=  Date.parse("#{year}-#{month}-01").strftime("%B %Y")

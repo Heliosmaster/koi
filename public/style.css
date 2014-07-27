@@ -23,3 +23,9 @@
 .expense {
     color:orangered;
 }
+@media (min-width:1600px)
+{
+    .container{
+        width:1560px
+    }
+}

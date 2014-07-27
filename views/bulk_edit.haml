@@ -1,11 +1,17 @@
-%div.alert.alert-info
-  Please select a year-month combination to edit
+%div.row
+  %div.col-md-10.col-md-offset-1{style: "margin-bottom: 30px;"}
+    %a.btn.btn-default.pull-right{href:"/"} Back
+    %h2 Bulk editing of transactions
 
-%div.col-md-6.col-md-offset-3
-  %ul.list-group
+%div.row
+  %div.col-md-10.col-md-offset-1
+    Please select a year-month combination to edit
+
+%div.row{style: "margin-top:40px;"}
+  %div.col-md-8.col-md-offset-2
     - @transactions.each do |year,transactions_in_year|
       - transactions_in_year.each do |month, t|
-        %li.list-group-item
-          %a{href: "/transaction/bulk_edit/#{year}/#{month}"}
+        %div.col-md-3
+          %a.btn.btn-primary{href: "/transaction/bulk_edit/#{year}/#{month}"}
             = Date.parse("#{year}-#{month}-01").strftime("%B %Y")
-          %span.badge= t.length
+            %span.badge= t.length

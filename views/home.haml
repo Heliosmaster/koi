@@ -1,23 +1,25 @@
 - if @user
   %div.col-md-10.col-md-offset-1
-    %div.col-md-6
-      %h2 Transactions
-    %div.col-md-6.pull-right
-      %div.btn-group
-        %a.btn.btn-warning{href: "/transaction/bulk_edit"}
-          Bulk edit
-          %span.glyphicon.glyphicon-th-list
-        %a.btn.btn-primary{href: "/transaction/add"}
-          Add transaction
-          %span.glyphicon.glyphicon-plus
-        %a.btn.btn-success{href: "/transaction/csv"}
-          Import/Export
-          %span.glyphicon.glyphicon-upload
-      %div.pull-right{style:"margin-top:20px;"}
-        - if @last_import
-          Last imported transaction:
-          = @last_import.strftime("%d/%m/%Y")
-          %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
+    %div.btn-group.pull-right
+      %a.btn.btn-warning{href: "/transaction/bulk_edit"}
+        Bulk edit
+        %span.glyphicon.glyphicon-th-list
+      %a.btn.btn-primary{href: "/transaction/add"}
+        Add transaction
+        %span.glyphicon.glyphicon-plus
+      %a.btn.btn-success{href: "/transaction/csv"}
+        Import
+        %span.glyphicon.glyphicon-upload
+        = "/"
+        Export
+        %span.glyphicon.glyphicon-download
+
+    %h2 Transactions
+    - if @last_import
+      %div.pull-right
+        %strong Last imported transaction:
+        = @last_import.strftime("%d/%m/%Y")
+  %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
     %table.table.table-bordered.table-striped
       %thead
         %tr

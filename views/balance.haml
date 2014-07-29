@@ -19,9 +19,9 @@
   %div.col-md-2.col-md-offset-5
     %a.btn.btn-success{href: "/balance/all"} All shared transactions
 %div.row{style: "margin-top:40px;"}
-  %div.col-md-6.col-md-offset-3
-    - @month_names_count.each do |e|
-      %div.col-md-4
-        %a.btn.btn-primary{href: "#{e[:url]}"}
-          = "#{e[:name]}"
-          %span.badge= "#{e[:count]}"
+  %div.col-md-8.col-md-offset-2
+    - @month_names_count.each_with_index do |e,i|
+      %div.col-md-4{style: "margin-top:20px"}
+        %a.btn.btn-info{href: "#{e[:url]}", style: "width:100%"}
+          %span.pull-left= "#{e[:name]}"
+          %span.badge.pull-right= "#{e[:count]}"

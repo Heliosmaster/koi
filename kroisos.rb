@@ -211,3 +211,45 @@ end
 get '/conflict.js' do
   coffee :conflict
 end
+
+# Partials for in-place update of values
+
+get '/difference' do
+ @user.difference.to_s
+end
+
+get '/monthly/:year/:month/shared_balance' do
+  start_day = Date.parse("#{params[:year]}-#{params[:month]}-01")
+  end_day = start_day.next_month-1
+  @user.transactions(date: (start_day..end_day), shared: true).map(&:amount).sum.to_s
+end
+
+get '/monthly/:year/:month/shared_income' do
+  start_day = Date.parse("#{params[:year]}-#{params[:month]}-01")
+  end_day = start_day.next_month-1
+  "+#{@user.transactions(date: (start_day..end_day),shared: true, :amount.gte => 0).map(&:amount).sum}"
+end
+
+get '/monthly/:year/:month/shared_expense' do
+  start_day = Date.parse("#{params[:year]}-#{params[:month]}-01")
+  end_day = start_day.next_month-1
+  @user.transactions(date: (start_day..end_day), shared: true, :amount.lt => 0).map(&:amount).sum.to_s
+end
+
+get '/yearly/:year/shared_balance' do
+  start_day = Date.parse("#{params[:year]}-01-01")
+  end_day = start_day.next_year-1
+  @user.transactions(date: (start_day..end_day), shared: true).map(&:amount).sum.to_s
+end
+
+get '/yearly/:year/shared_income' do
+  start_day = Date.parse("#{params[:year]}-01-01")
+  end_day = start_day.next_year-1
+  "+#{@user.transactions(date: (start_day..end_day),shared: true, :amount.gte => 0).map(&:amount).sum}"
+end
+
+get '/yearly/:year/shared_expense' do
+  start_day = Date.parse("#{params[:year]}-01-01")
+  end_day = start_day.next_year-1
+  @user.transactions(date: (start_day..end_day), shared: true, :amount.lt => 0).map(&:amount).sum.to_s
+end

@@ -40,7 +40,7 @@
                 %td= t.target
                 %td= t.reason
                 %td.text-center
-                  %button.btn.btn-default.shared-icon{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove", data: {url: "/transaction/#{t.id}/toggle_shared", shared: "#{t.shared}"}}
+                  %button.btn.btn-default.shared-icon{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove", data: {url: "/transaction/#{t.id}/toggle_shared", shared: "#{t.shared}", month: month, year: year}}
                 %td
                   %form{action: "/transaction/#{t.id}", method: "post"}
                     %input{name: "_method", type: "hidden", value: "delete"}
@@ -54,26 +54,26 @@
                 %strong=  Date.parse("#{year}-#{month}-01").strftime("%B %Y")
                 %td
                   - monthly_balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
-                  %strong{class: monthly_balance >= 0 ? "income" : "expense" }= monthly_balance
+                  %strong{class: monthly_balance >= 0 ? "income" : "expense", id: "balance-#{year}-#{month}" }= monthly_balance
                 %td
                   - monthly_income = @transactions_by_year_month[year][month].select{|t| t.amount >= 0}.map(&:amount).sum
                   - monthly_expense = @transactions_by_year_month[year][month].select{|t| t.amount < 0}.map(&:amount).sum
                   (
-                  %strong.income= "+#{monthly_income}"
+                  %strong.income{id: "income-#{year}-#{month}"}= "+#{monthly_income}"
                   = "/"
-                  %strong.expense= monthly_expense
+                  %strong.expense{id: "expense-#{year}-#{month}"}= monthly_expense
                   )
 
                 %td{colspan: 3}
                   - monthly_shared_balance = @transactions_by_year_month[year][month].select(&:shared).map(&:amount).sum
                   %strong Shared:
-                  %strong{class: monthly_shared_balance >= 0 ? "income" : "expense" }= monthly_shared_balance
+                  %strong{class: monthly_shared_balance >= 0 ? "income" : "expense", id: "shared-balance-#{year}-#{month}" }= monthly_shared_balance
                   - monthly_shared_income = @transactions_by_year_month[year][month].select{|t| t.amount >= 0 && t.shared}.map(&:amount).sum
                   - monthly_shared_expense = @transactions_by_year_month[year][month].select{|t| t.amount < 0 && t.shared}.map(&:amount).sum
                   (
-                  %strong.income= "+#{monthly_shared_income}"
+                  %strong.income{id: "shared-income-#{year}-#{month}"}= "+#{monthly_shared_income}"
                   = "/"
-                  %strong.expense= monthly_shared_expense
+                  %strong.expense{id: "shared-expense-#{year}-#{month}"}= monthly_shared_expense
                   )
 
           %tr.success
@@ -94,13 +94,13 @@
                 %td{colspan: 3}
                   - yearly_shared_balance = @transactions_by_year_month[year].values.flatten.select(&:shared).map(&:amount).sum
                   %strong Shared:
-                  %strong{class: yearly_shared_balance >= 0 ? "income" : "expense" }= yearly_shared_balance
+                  %strong{class: yearly_shared_balance >= 0 ? "income" : "expense", id: "yearly-shared-balance-#{year}" }= yearly_shared_balance
                   - yearly_shared_income = @transactions_by_year_month[year].values.flatten.select{|t| t.amount >= 0 && t.shared}.map(&:amount).sum
                   - yearly_shared_expense = @transactions_by_year_month[year].values.flatten.select{|t| t.amount < 0 && t.shared}.map(&:amount).sum
                   (
-                  %strong.income= "+#{yearly_shared_income}"
+                  %strong.income{id: "yearly-shared-income-#{year}"}= "+#{yearly_shared_income}"
                   = "/"
-                  %strong.expense= yearly_shared_expense
+                  %strong.expense{id: "yearly-shared-expense-#{year}"}= yearly_shared_expense
                   )
 
 - else

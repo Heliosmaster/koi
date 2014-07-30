@@ -11,7 +11,7 @@
   %div.col-md-8.col-md-offset-2
     - @transactions.each do |year,transactions_in_year|
       - transactions_in_year.each do |month, t|
-        %div.col-md-3
-          %a.btn.btn-primary{href: "/transaction/bulk_edit/#{year}/#{month}"}
-            = Date.parse("#{year}-#{month}-01").strftime("%B %Y")
-            %span.badge= t.length
+        %div.col-md-4{style: "margin-top:20px"}
+          %a.btn.btn-info{href: "/transaction/bulk_edit/#{year}/#{month}", style: "width:100%"}
+            %span.pull-left= Date.parse("#{year}-#{month}-01").strftime("%B %Y")
+            %span.pull-right.badge= t.length

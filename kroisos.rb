@@ -40,6 +40,14 @@ get '/' do
   haml :home, layout: :layout
 end
 
+get '/transaction/:year/:month' do
+  @year = params[:year].to_i
+  @month = params[:month].to_i
+  @transactions = @user.transactions_by_year_month[@year][@month]
+  haml :year_month
+end
+
+
 post '/select_user' do
   @user = User.first(name: params["user_select"])
   session[:user] = @user ? @user.id : nil
@@ -141,6 +149,12 @@ get '/transaction/bulk_edit/:year/:month' do
   @transactions = transactions_ym[year][month]
   haml :bulk_edit_month, layout: :layout
 end
+
+get '/transaction/show' do
+  @transactions = @user.transactions_by_year_month
+  haml :show
+end
+
 
 
 

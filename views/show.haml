@@ -1,0 +1,17 @@
+%div.row
+  %div.col-md-10.col-md-offset-1{style: "margin-bottom: 30px;"}
+    %a.btn.btn-default.pull-right{href:"/"} Back
+    %h2 Transactions
+
+%div.row
+  %div.col-md-10.col-md-offset-1
+    %div.alert.alert-info Please select a year-month combination to view
+
+%div.row{style: "margin-top:40px;"}
+  %div.col-md-8.col-md-offset-2
+    - @transactions.each do |year,transactions_in_year|
+      - transactions_in_year.each do |month, t|
+        %div.col-md-4{style: "margin-top:20px"}
+          %a.btn.btn-info{href: "/transaction/#{year}/#{month}", style: "width:100%"}
+            %span.pull-left= Date.parse("#{year}-#{month}-01").strftime("%B %Y")
+            %span.pull-right.badge= t.length

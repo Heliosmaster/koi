@@ -27,6 +27,8 @@
                 (
                 %span#difference{class: @difference >=0 ? "income" : "expense" }= @difference
                 )
+          %li
+            %a{href:"/transaction/show"} Transactions
 
         %div.navbar-right
           %form{action: "/select_user", method: "post", class:"navbar-form"}

@@ -118,7 +118,7 @@ put '/transaction/:id' do
     @errors = [error]
     haml :conflict, layout: :layout
   else
-  redirect to "/"
+    redirect to "/"
   end
 end
 
@@ -215,7 +215,7 @@ end
 # Partials for in-place update of values
 
 get '/difference' do
- @user.difference.to_s
+  @user.difference.to_s
 end
 
 get '/monthly/:year/:month/shared_balance' do

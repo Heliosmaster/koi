@@ -17,13 +17,13 @@ bindSharedIcons = ->
                                 #console.log document.URL
                                 $('#difference').load('/difference')
 
-                                $('#shared-balance-' + year + '-' + month).load('/monthly/' + year + '/' + month + '/shared_balance')
-                                $('#shared-income-' + year + '-' + month).load('/monthly/' + year + '/' + month + '/shared_income')
-                                $('#shared-expense-' + year + '-' + month).load('/monthly/' + year + '/' + month + '/shared_expense')
+                                # $('#shared-balance-' + year + '-' + month).load('/monthly/' + year + '/' + month + '/shared_balance')
+                                # $('#shared-income-' + year + '-' + month).load('/monthly/' + year + '/' + month + '/shared_income')
+                                # $('#shared-expense-' + year + '-' + month).load('/monthly/' + year + '/' + month + '/shared_expense')
 
-                                $('#yearly-shared-balance-' + year).load('/yearly/' + year + '/shared_balance')
-                                $('#yearly-shared-income-' + year).load('/yearly/' + year + '/shared_income')
-                                $('#yearly-shared-expense-' + year).load('/yearly/' + year + '/shared_expense')
+                                # $('#yearly-shared-balance-' + year).load('/yearly/' + year + '/shared_balance')
+                                # $('#yearly-shared-income-' + year).load('/yearly/' + year + '/shared_income')
+                                # $('#yearly-shared-expense-' + year).load('/yearly/' + year + '/shared_expense')
 
 $ ->
         bindSharedIcons()

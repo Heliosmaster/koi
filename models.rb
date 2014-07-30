@@ -103,7 +103,7 @@ class User
   has n, :transactions
 
   def update_total_shared_expenses
-    self.total_shared_expenses = transactions(shared: true, :amount.lte => 0).map(&:amount).sum.abs.round(2)
+    self.total_shared_expenses = transactions(shared: true, :amount.lte => 0).map(&:amount).sum.abs
     self.save!
   end
 

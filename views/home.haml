@@ -51,7 +51,8 @@
                         %span.glyphicon.glyphicon-trash
             %tr.info
               %td
-                %strong=  Date.parse("#{year}-#{month}-01").strftime("%B %Y")
+                %a{href:"/transactions/show/#{year}/#{month}"}
+                  %strong=  Date.parse("#{year}-#{month}-01").strftime("%B %Y")
                 %td
                   - monthly_balance = @transactions_by_year_month[year][month].map(&:amount).sum.round(2)
                   %strong{class: monthly_balance >= 0 ? "income" : "expense", id: "balance-#{year}-#{month}" }= monthly_balance
@@ -78,7 +79,8 @@
 
           %tr.success
             %td
-              %strong=  "Total #{year}"
+              %a{href:"/transactions/show/#{year}"}
+                %strong=  "Total #{year}"
               %td
                 - yearly_balance = @transactions_by_year_month[year].values.flatten.map(&:amount).sum
                 %strong{class: yearly_balance >= 0 ? "income" : "expense" }= yearly_balance

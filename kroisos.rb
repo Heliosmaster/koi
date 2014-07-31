@@ -174,6 +174,11 @@ get '/transaction/show' do
   haml :show
 end
 
+get '/transaction/search' do
+  @transactions = Transaction.all(:date.gte => params[:start_date], :date.lte => params[:end_date])
+  haml :show_search, layout: :layout
+end
+
 
 
 

@@ -40,7 +40,7 @@ get '/' do
   haml :home, layout: :layout
 end
 
-get '/transaction/:year/:month' do
+get '/transactions/show/:year/:month' do
   @year = params[:year].to_i
   @month = params[:month].to_i
   @transactions = @user.transactions_by_year_month[@year][@month]

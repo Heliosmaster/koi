@@ -15,10 +15,10 @@
         %span.glyphicon.glyphicon-download
 
     %h2 Transactions
-    - if @last_import
+    - if @last_import_date
       %div.pull-right
         %strong Last imported transaction:
-        = @last_import.strftime("%d/%m/%Y")
+        %a{href:"#transaction-#{@last_import_id}"}= @last_import_date.strftime("%d/%m/%Y")
   %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
     %table.table.table-bordered.table-striped
       %thead
@@ -33,7 +33,7 @@
         - @transactions_by_year_month.each do |year,t_by_month|
           - t_by_month.each do |month,transactions|
             - transactions.each do |t|
-              %tr
+              %tr{id: "transaction-#{t.id}"}
                 %td= t.date.strftime("%d/%m/%Y")
                 %td
                   %strong{class: t.income? ? "income" : "expense" }= t.amount

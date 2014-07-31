@@ -34,7 +34,8 @@ get '/' do
   if @user
     @transactions = @user.transactions
     @transactions_by_year_month = @user.transactions_by_year_month
-    @last_import ||= @user.last_import
+    @last_import_date ||= @user.last_import_date
+    @last_import_id ||= @user.last_import_id
   end
 
   haml :home, layout: :layout

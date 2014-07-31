@@ -1,0 +1,103 @@
+- if @user
+  %div.col-md-10.col-md-offset-1
+    %div.btn-group.pull-right
+      %a.btn.btn-warning{href: "/transaction/bulk_edit/#{@year}"}
+        Bulk edit
+        %span.glyphicon.glyphicon-th-list
+      %a.btn.btn-primary{href: "/transaction/add"}
+        Add transaction
+        %span.glyphicon.glyphicon-plus
+      %button.btn.btn-default{onclick: "window.history.back()"} Back
+    %h2= "Transactions for #{@year}"
+    - if @last_import
+      %div.pull-right
+        %strong Last imported transaction:
+        = @last_import.strftime("%d/%m/%Y")
+  %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th Date
+          %th Amount
+          %th Target
+          %th Reason
+          %th Shared?
+          %th{style: "min-width:120px;"} Actions
+      %tbody
+        - @transactions.each do |month,transactions_in_month|
+          - transactions_in_month.each do |t|
+            %tr
+              %td= t.date.strftime("%d/%m/%Y")
+              %td
+                %strong{class: t.income? ? "income" : "expense" }= t.amount
+              %td= t.target
+              %td= t.reason
+              %td.text-center
+                %button.btn.btn-default.shared-icon{class: t.shared ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-remove", data: {url: "/transaction/#{t.id}/toggle_shared", shared: "#{t.shared}", month: month, year: @year}}
+              %td
+                %form{action: "/transaction/#{t.id}", method: "post"}
+                  %input{name: "_method", type: "hidden", value: "delete"}
+                  %div.btn-group
+                    %a{href: "/transaction/#{t.id}", class:"btn btn-primary"}
+                      %span.glyphicon.glyphicon-pencil
+                    %button.btn.btn-danger{type:"submit", class:"btn btn-danger"}
+                      %span.glyphicon.glyphicon-trash
+          %tr.info
+            %td
+              %a{href:"/transactions/show/#{@year}/#{month}"}
+                %strong=  Date.parse("#{@year}-#{month}-01").strftime("%B %Y")
+              %td
+                - monthly_balance = transactions_in_month.map(&:amount).sum.round(2)
+                %strong{class: monthly_balance >= 0 ? "income" : "expense", id: "balance-#{@year}-#{month}" }= monthly_balance
+              %td
+                - monthly_income = transactions_in_month.select{|t| t.amount >= 0}.map(&:amount).sum
+                - monthly_expense = transactions_in_month.select{|t| t.amount < 0}.map(&:amount).sum
+                (
+                %strong.income{id: "income-#{@year}-#{month}"}= "+#{monthly_income}"
+                = "/"
+                %strong.expense{id: "expense-#{@year}-#{month}"}= monthly_expense
+                )
+
+            %td{colspan: 3}
+              - monthly_shared_balance = transactions_in_month.select(&:shared).map(&:amount).sum
+              %strong Shared:
+              %strong{class: monthly_shared_balance >= 0 ? "income" : "expense", id: "shared-balance-#{@year}-#{month}" }= monthly_shared_balance
+              - monthly_shared_income = transactions_in_month.select{|t| t.amount >= 0 && t.shared}.map(&:amount).sum
+              - monthly_shared_expense = transactions_in_month.select{|t| t.amount < 0 && t.shared}.map(&:amount).sum
+              (
+              %strong.income{id: "shared-income-#{@year}-#{month}"}= "+#{monthly_shared_income}"
+              = "/"
+              %strong.expense{id: "shared-expense-#{@year}-#{month}"}= monthly_shared_expense
+              )
+        %tr.success
+          %td
+            %strong=  "Total #{@year}"
+            %td
+              - yearly_balance = @transactions.values.flatten.map(&:amount).sum
+              %strong{class: yearly_balance >= 0 ? "income" : "expense" }= yearly_balance
+            %td
+              - yearly_income = @transactions.values.flatten.select{|t| t.amount >= 0}.map(&:amount).sum
+              - yearly_expense = @transactions.values.flatten.select{|t| t.amount < 0}.map(&:amount).sum
+              (
+              %strong.income= "+#{yearly_income}"
+              = "/"
+              %strong.expense= yearly_expense
+              )
+
+              %td{colspan: 3}
+                - yearly_shared_balance = @transactions.values.flatten.select(&:shared).map(&:amount).sum
+                %strong Shared:
+                %strong{class: yearly_shared_balance >= 0 ? "income" : "expense", id: "yearly-shared-balance-#{@year}" }= yearly_shared_balance
+                - yearly_shared_income = @transactions.values.flatten.select{|t| t.amount >= 0 && t.shared}.map(&:amount).sum
+                - yearly_shared_expense = @transactions.values.flatten.select{|t| t.amount < 0 && t.shared}.map(&:amount).sum
+                (
+                %strong.income{id: "yearly-shared-income-#{@year}"}= "+#{yearly_shared_income}"
+                = "/"
+                %strong.expense{id: "yearly-shared-expense-#{@year}"}= yearly_shared_expense
+                )
+
+
+- else
+  %div.alert.alert-warning Please select a user from the dropdown
+
+%script{src: "/home.js", type: "text/javascript"}

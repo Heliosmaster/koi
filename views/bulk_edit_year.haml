@@ -1,0 +1,29 @@
+%form{action: "/transaction/bulk_edit", method: "post", class: "form-horizontal"}
+  %div.col-md-10.col-md-offset-1
+    %div.col-md-6
+      %h2= "Editing transactions for #{@year}"
+    %div.col-md-6
+      %div.btn-group.pull-right
+        %span.btn.btn-default{onclick: "window.history.back()"} Back
+        %button.btn.btn-primary{type: "submit", class: "btn btn-primary"} Update
+  %div.col-md-10.col-md-offset-1
+    %table.table.table-bordered.table-striped
+      %tr
+        %th Date
+        %th Amount
+        %th Target
+        %th Reason
+        %th Shared?
+      - @transactions.each do |month,transactions_in_month|
+        - transactions_in_month.each do |t|
+          %tr
+            %td.col-md-1
+              %input{type: "date", class: "form-control", value:"#{t.date}", name: "transaction[#{t.id}][date]"}
+            %td.col-md-2
+              %input{type: "number", class: "form-control", step: "0.01", value: "#{t.amount}", name: "transaction[#{t.id}][amount]"}
+            %td.col-md-4
+              %textarea{rows: 2, class: "form-control", name: "transaction[#{t.id}][target]"}= t.target
+            %td.col-md-4
+              %textarea{type: "text", class: "form-control", name: "transaction[#{t.id}][reason]"}= t.reason
+            %td.col-md-1
+              %input{type: "checkbox", value: "t", name: "transaction[#{t.id}][shared]", checked: t.shared}

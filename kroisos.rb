@@ -43,8 +43,15 @@ end
 get '/transactions/show/:year/:month' do
   @year = params[:year].to_i
   @month = params[:month].to_i
+  @pretty_month_year = Date.parse("#{@year}-#{@month}-01").strftime("%B %Y")
   @transactions = @user.transactions_by_year_month[@year][@month]
   haml :year_month
+end
+
+get '/transactions/show/:year' do
+  @year = params[:year].to_i
+  @transactions = @user.transactions_by_year_month[@year]
+  haml :year
 end
 
 
@@ -145,10 +152,21 @@ end
 get '/transaction/bulk_edit/:year/:month' do
   year = params[:year].to_i
   month = params[:month].to_i
+  @pretty_month_year = Date.parse("#{year}-#{month}-01").strftime("%B %Y")
   transactions_ym = @user.transactions_by_year_month
   @transactions = transactions_ym[year][month]
   haml :bulk_edit_month, layout: :layout
 end
+
+get '/transaction/bulk_edit/:year' do
+  year = params[:year].to_i
+  month = params[:month].to_i
+  transactions_ym = @user.transactions_by_year_month
+  @transactions = transactions_ym[year]
+  haml :bulk_edit_year, layout: :layout
+end
+
+
 
 get '/transaction/show' do
   @transactions = @user.transactions_by_year_month

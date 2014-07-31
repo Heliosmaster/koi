@@ -5,15 +5,16 @@
 
 %div.row
   %div.col-md-10.col-md-offset-1
-    %div.alert.alert-info Please select a year-month combination to view
+    %div.alert.alert-info Please select a year (or year-month) combination to view transactions.
 
 %div.row{style: "margin-top:40px;"}
   %div.col-md-8.col-md-offset-2
     - @transactions.each do |year,transactions_in_year|
       %div.row{style: "margin-bottom:20px;"}
-        %a.btn.btn-success{href: "/transactions/show/#{year}", style: "width:100%"}
-          %span.pull-left= year
-          %span.pull-right.badge= transactions_in_year.values.flatten.length
+        %div.col-md-12
+          %a.btn.btn-success{href: "/transactions/show/#{year}", style: "width:100%"}
+            %span.pull-left= year
+            %span.pull-right.badge= transactions_in_year.values.flatten.length
         - transactions_in_year.each do |month, t|
           %div.col-md-4{style: "margin-top:20px"}
             %a.btn.btn-info{href: "/transactions/show/#{year}/#{month}", style: "width:100%"}

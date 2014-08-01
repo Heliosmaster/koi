@@ -1,4 +1,9 @@
-# Kroisos
+# Koi
 
-This is a Sinatra application aimed at a simple management of personal
-and common expenses.
+**Koi** is a simple application to organize the financial transactions of your family.
+
+This application is aimed at all the families whose members have a personal bank account and use it for their normal daily life, combining personal transactions and common expenses.
+
+With Koi, you can easily keep track of all the sources of income and the targets of your expenses, with a clear overview of every transaction, as well as monthly and yearly breakdowns.
+
+And charts, everybody loves charts.

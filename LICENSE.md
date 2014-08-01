@@ -1,4 +1,4 @@
-Kroisos is licensed under the MIT License:
+Koi is licensed under the MIT License:
 
 > Copyright (C) 2014, Davide Taviani
 >

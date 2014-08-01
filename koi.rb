@@ -11,7 +11,7 @@ require_relative 'models'
 # If you want the logs displayed you have to do this before the call to setup
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/kroisos.db")
+DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/koi.db")
 DataMapper.finalize.auto_upgrade!
 
 User.create(name: "Davide")
@@ -140,7 +140,7 @@ end
 
 
 post '/transaction/export' do
-  attachment "Kroisos-#{Date.today}.txt"
+  attachment "Koi-#{Date.today}.txt"
   @user.export_to_csv
   #  redirect to '/'
 end

@@ -153,6 +153,22 @@ class User
     stats
   end
 
+  def daily_increments(transactions)
+    start_day = transactions.first.date
+    end_day = transactions.last.date
+    final_hash = {}
+    (start_day+1..end_day).each do |day|
+      final_hash[day] = transactions.select{|t| t.date == day}.map(&:amount).sum
+    end
+    final_hash
+  end
+
+  def daily_balance(transactions)
+    sum = 0
+    increments = self.daily_increments(transactions)
+    Hash[increments.keys.zip(increments.values.map { |x| sum += x})]
+  end
+
 end
 
 class BigDecimal

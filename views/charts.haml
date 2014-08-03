@@ -1,0 +1,40 @@
+%div.row
+  %div.col-md-10.col-md-offset-1{style: "margin-bottom: 30px;"}
+    %a.btn.btn-default.pull-right{href:"/"} Back
+    %h2 Charts
+
+%div.row
+  %div.col-md-10.col-md-offset-1
+    %div.alert.alert-info Please select an interval of time or select a year and/or month
+
+%div.row
+  %div.col-md-6.col-md-offset-3
+    %form{action: "/charts/search", method: "get", class: "form-inline"}
+      %div.form-group
+        %div.col-md-5
+          %label Start date
+          %input{type: "date", class: "form-control", value: Date.today-1, name: "start_date"}
+        %div.col-md-5
+          %label End date
+          %input{type: "date", class: "form-control", value: Date.today , name: "end_date"}
+        %div.col-md-2
+          %label &nbsp;
+          %button{type: "submit", class: "btn btn-primary"} Search
+
+%div.row{style: "margin-top:40px;"}
+  %div.col-md-8.col-md-offset-2
+    %a.btn.btn-danger{href: "/charts/all", style: "width:100%"} All recorded history
+
+%div.row{style: "margin-top:40px;"}
+  %div.col-md-8.col-md-offset-2
+    - @transactions.each do |year,transactions_in_year|
+      %div.row{style: "margin-bottom:20px;"}
+        %div.col-md-12
+          %a.btn.btn-success{href: "/charts/#{year}", style: "width:100%"}
+            %span.pull-left= year
+            %span.pull-right.badge= transactions_in_year.values.flatten.length
+        - transactions_in_year.each do |month, t|
+          %div.col-md-4{style: "margin-top:20px"}
+            %a.btn.btn-info{href: "/charts/#{year}/#{month}", style: "width:100%"}
+              %span.pull-left= Date.parse("#{year}-#{month}-01").strftime("%B %Y")
+              %span.pull-right.badge= t.length

@@ -167,8 +167,6 @@ get '/transaction/bulk_edit/:year' do
   haml :bulk_edit_year, layout: :layout
 end
 
-
-
 get '/transaction/show' do
   @transactions = @user.transactions_by_year_month
   haml :show
@@ -178,9 +176,6 @@ get '/transaction/search' do
   @transactions = Transaction.all(:date.gte => params[:start_date], :date.lte => params[:end_date])
   haml :show_search, layout: :layout
 end
-
-
-
 
 # Modifying a transaction
 get '/transaction/:id' do
@@ -193,7 +188,6 @@ post '/transaction/:id/toggle_shared' do
   transaction.update(shared: !transaction.shared)
   transaction.user.update_values
 end
-
 
 delete '/transaction/:id' do
   transaction = Transaction.get(params[:id])
@@ -290,4 +284,37 @@ get '/yearly/:year/shared_expense' do
   start_day = Date.parse("#{params[:year]}-01-01")
   end_day = start_day.next_year-1
   @user.transactions(date: (start_day..end_day), shared: true, :amount.lt => 0).map(&:amount).sum.to_s
+end
+
+get '/charts' do
+  @transactions = @user.transactions_by_year_month
+  haml :charts
+end
+
+get '/charts/all' do
+  transaction_data = @user.daily_balance(@user.transactions)
+  @data = transaction_data.map do |k,v|
+    [k.to_time.to_i*1000, v.to_s.to_f]
+  end
+  haml :charts_show
+end
+
+get '/charts/:year' do
+  start_day = Date.parse("#{params[:year]}-01-01")
+  end_day = start_day.next_year-1
+  transaction_data = @user.daily_balance(@user.transactions(date: (start_day..end_day)))
+  @data = transaction_data.map do |k,v|
+    [k.to_time.to_i*1000, v.to_s.to_f]
+  end
+  haml :charts_show
+end
+
+get '/charts/:year/:month' do
+  start_day = Date.parse("#{params[:year]}-#{params[:month]}-01")
+  end_day = start_day.next_month-1
+  transaction_data = @user.daily_balance(@user.transactions(date: (start_day..end_day)))
+  @data = transaction_data.map do |k,v|
+    [k.to_time.to_i*1000, v.to_s.to_f]
+  end
+  haml :charts_show
 end

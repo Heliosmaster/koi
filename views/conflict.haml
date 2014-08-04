@@ -20,9 +20,9 @@
             %input{type: "date", value:"#{t.date}", name: "transaction[#{i}][date]"}
           %td.col-md-2
             %input{type: "number", class: "form-control", step: "0.01", value: "#{t.amount}", name: "transaction[#{i}][amount]"}
-          %td.col-md-3
-            %textarea{class: "form-control", name: "transaction[#{i}][target]"}= t.target
           %td.col-md-2
+            %textarea{class: "form-control", name: "transaction[#{i}][target]"}= t.target
+          %td.col-md-3
             %textarea{type: "text", class: "form-control", name: "transaction[#{i}][reason]"}= t.reason
           %td.col-md-1
             %input{type: "checkbox", value: "t", name: "transaction[#{i}][shared]", checked: t.shared}

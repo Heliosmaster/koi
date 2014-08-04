@@ -1,13 +1,13 @@
 class Transaction
   include DataMapper::Resource
   property :id, Serial
-  property :amount, Decimal, precision: 8, scale: 2, required: true, unique_index: :date_amount_target
-  property :date, Date, required: true, unique_index: :date_amount_target
-  property :target, String, required: true, unique_index: :date_amount_target
-  property :reason, String
+  property :amount, Decimal, precision: 8, scale: 2, required: true, unique_index: :date_amount_reason
+  property :date, Date, required: true, unique_index: :date_amount_reason
+  property :target, Text, lazy: false
+  property :reason, Text, lazy: false, required: true, unique_index: :date_amount_reason
   property :shared, Boolean, default: true
 
-  validates_uniqueness_of :amount, :scope => [:date, :target], message: "Date/Amount/Target already present"
+  validates_uniqueness_of :amount, :scope => [:date, :reason], message: "Date/Amount/Reason already present"
 
   belongs_to :user
 
@@ -45,10 +45,11 @@ class Transaction
     self.errors unless self.save
   end
 
-  def self.create_from_csv(csv,user,default_shared)
-    @user = user
-    @last_import_date = @user.last_import_date
-    @last_import_id = @user.last_import_id
+
+
+  def self.create_from_rabobank_csv(csv,user,default_shared)
+    @last_import_date = user.last_import_date
+    @last_import_id = user.last_import_id
     errors = []
 
     CSV.foreach(csv) do |row|
@@ -56,22 +57,46 @@ class Transaction
       t = new
       t.date = @date
       t.amount = (row[3] == "C" ? row[4].to_f : -row[4].to_f)
-      if row[6].empty?
-        t.target = row[10]
-        t.reason = ""
-      else
-        t.target = row[6]
-        t.reason = row[10]
-      end
-      t.user_id = @user.id
+      t.target = (row[5] + " " + row[6]).rstrip
+      t.reason = (row[10] + " " + row[11] + " " + row[12] + " " + row[13] + " " + row[14] + " " + row[15]).rstrip
+      t.user_id = user.id
       t.shared = default_shared
       if !@last_import_date || @last_import_date < @date
-        @user.last_import_date = @date
+        user.last_import_date = @date
         @last_import_date = @date
       end
       if t.save
         if !@last_import_id || @last_import_id < t.id
-          @user.last_import_id = t.id
+          user.last_import_id = t.id
+        end
+      else
+        errors << t.errors
+      end
+    end
+    errors
+  end
+
+  def self.create_from_koi_csv(csv,user)
+    @last_import_date = user.last_import_date
+    @last_import_id = user.last_import_id
+    errors = []
+
+    CSV.foreach(csv, headers: true) do |row|
+      @date = Date.parse(row['Date'])
+      t = new
+      t.date = @date
+      t.amount = row['amount']
+      t.target = row['target']
+      t.reason = row['reason']
+      t.user_id = user.id
+      t.shared = row['shared']
+      if !@last_import_date || @last_import_date < @date
+        user.last_import_date = @date
+        @last_import_date = @date
+      end
+      if t.save
+        if !@last_import_id || @last_import_id < t.id
+          user.last_import_id = t.id
         end
       else
         errors << t.errors

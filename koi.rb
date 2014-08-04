@@ -77,7 +77,11 @@ get '/transaction/csv' do
 end
 
 post '/transaction/import' do
-  @errors = Transaction.create_from_csv(params[:file][:tempfile], @user, params[:shared])
+  if params[:format] == "koi"
+    @errors = Transaction.create_from_koi_csv(params[:file][:tempfile], @user)
+  else
+    @errors = Transaction.create_from_rabobank_csv(params[:file][:tempfile], @user, params[:shared])
+  end
   @user.update_values
   if @errors.empty?
     redirect to '/'
@@ -212,7 +216,6 @@ get '/balance' do
     end
   end
   @stats = User.expenses_and_differences
-
   haml :balance, layout: :layout
 end
 

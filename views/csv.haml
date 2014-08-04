@@ -12,6 +12,11 @@
     %div.panel-body
       %form{action: "/transaction/import", method: "post", enctype: "multipart/form-data",  class: "form-horizontal"}
         %div.form-group.col-md-12
+          %label CSV type:
+          %select.form-control{name: "format", style: "width:auto; display:inline;"}
+            %option{value: "koi"} Koi
+            %option{value: "rabobank"} Rabobank
+        %div.form-group.col-md-12
           %label CSV file:
           %input.file-inputs{type: "file", name: "file"}
         %div.form-group.col-md-12

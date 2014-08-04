@@ -24,15 +24,15 @@
         %ul.nav.navbar-nav
           %li
             %a{href:"/balance"}
-              Balance
               - if @difference
-                (
                 %span#difference{class: @difference >=0 ? "income" : "expense" }= @difference
-                )
-          %li
-            %a{href:"/transaction/show"} Transactions
-          %li
-            %a{href:"/charts"} Charts
+              - else
+                Balance
+          - if @user
+            %li
+              %a{href:"/transaction/show"} Transactions
+            %li
+              %a{href:"/charts"} Charts
 
         %div.navbar-right
           %form{action: "/select_user", method: "post", class:"navbar-form"}

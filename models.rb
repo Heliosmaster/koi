@@ -135,19 +135,11 @@ class User
   property :difference, Decimal, precision: 8, scale: 2, default: 0
   has n, :transactions
 
-  def update_total_shared_expenses
-    self.total_shared_expenses = transactions(shared: true, :amount.lte => 0).map(&:amount).sum.abs
-    self.save!
-  end
-
-  def update_differences
-    self.difference = (total_shared_expenses-User.average_expenses)
-    self.save!
-  end
-
   def update_values
-    self.update_total_shared_expenses
-    self.update_differences
+    total_expenses = transactions(shared: true, :amount.lte => 0).map(&:amount).sum.abs
+    self.total_shared_expenses = total_expenses
+    self.difference = (total_expenses-User.average_expenses)
+    self.save!
   end
 
   def self.average_expenses

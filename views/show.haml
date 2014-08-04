@@ -8,18 +8,22 @@
     %div.alert.alert-info Please select an interval of time or select a year and/or month
 
 %div.row
-  %div.col-md-6.col-md-offset-3
+  %div.col-md-8.col-md-offset-2
     %form{action: "/transaction/search", method: "get", class: "form-inline"}
       %div.form-group
         %div.col-md-5
-          %label Start date
-          %input{type: "date", class: "form-control", value: Date.today-1, name: "start_date"}
+          %label.col-md-5
+            %span.pull-right Start date
+          %div.col-md-7
+            %input{type: "date", class: "form-control", value: Date.today-1, name: "start_date"}
         %div.col-md-5
-          %label End date
-          %input{type: "date", class: "form-control", value: Date.today , name: "end_date"}
+          %label.col-md-5
+            %span.pull-right End date
+          %div.col-md-7
+            %input{type: "date", class: "form-control", value: Date.today , name: "end_date"}
         %div.col-md-2
-          %label &nbsp;
-          %button{type: "submit", class: "btn btn-primary"} Search
+          %div.col-md-6.col-md-offset-6
+            %button{type: "submit", class: "btn btn-primary"} Search
 
 %div.row{style: "margin-top:40px;"}
   %div.col-md-8.col-md-offset-2

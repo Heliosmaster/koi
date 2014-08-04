@@ -29,8 +29,12 @@
   %div.panel.panel-default
     %div.panel-heading Export
     %div.panel-body
-      Export all the transactions in a CSV file
-      %form{action: "/transaction/export", method: "post"}
-        %button.btn.btn-primary.pull-right{type: "submit"} Export transactions
+      %div.col-md-12
+        %form.form-horizontal{action: "/transaction/export", method: "post"}
+          %div.form-group
+            %label.col-md-2 File name
+            %div.col-md-10
+              %input.form-control{type: "text", value: "Koi-#{@user.name}-#{Date.today}.csv", name: "filename"}
+          %button.btn.btn-primary.pull-right{type: "submit"} Export transactions
 
 %script{src: "/input.js", type: "text/javascript"}

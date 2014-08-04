@@ -144,7 +144,7 @@ end
 
 
 post '/transaction/export' do
-  attachment "Koi-#{Date.today}.txt"
+  attachment "#{params[:filename]}"
   @user.export_to_csv
   #  redirect to '/'
 end

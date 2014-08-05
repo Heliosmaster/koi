@@ -4,15 +4,15 @@
       %a.btn.btn-warning{href: "/transaction/bulk_edit"}
         Bulk edit
         %span.glyphicon.glyphicon-th-list
-      %a.btn.btn-primary{href: "/transaction/add"}
-        Add transaction
-        %span.glyphicon.glyphicon-plus
       %a.btn.btn-success{href: "/transaction/csv"}
         Import
         %span.glyphicon.glyphicon-upload
         = "/"
         Export
         %span.glyphicon.glyphicon-download
+      %a.btn.btn-primary{href: "/transaction/add"}
+        Add transaction
+        %span.glyphicon.glyphicon-plus
 
     %h1 Transactions
     - if @last_import_date

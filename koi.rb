@@ -67,9 +67,14 @@ get '/transaction/add' do
 end
 
 post '/transaction/add' do
-  Transaction.create_from_params(params[:transaction], @user)
-  @user.update_values
-  redirect to '/'
+  error = Transaction.create_from_params(params[:transaction], @user)
+  if error.nil?
+    @user.update_values
+    redirect to '/'
+  else
+    @errors = [error]
+    haml :conflict, layout: :layout
+  end
 end
 
 get '/transaction/csv' do

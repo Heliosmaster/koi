@@ -1,17 +1,25 @@
 class Transaction
   include DataMapper::Resource
   property :id, Serial
-  property :amount, Decimal, precision: 8, scale: 2, required: true, unique_index: :date_amount_reason
-  property :date, Date, required: true, unique_index: :date_amount_reason
+  property :amount, Decimal, precision: 8, scale: 2, required: true
+  property :date, Date, required: true
   property :target, Text, lazy: false
-  property :reason, Text, lazy: false, required: true, unique_index: :date_amount_reason
+  property :reason, Text, lazy: false, required: true
   property :shared, Boolean, default: true
 
-  validates_uniqueness_of :amount, :scope => [:date, :reason], message: "Date/Amount/Reason already present"
+  validates_with_method :check_fields
 
   belongs_to :user
 
   default_scope(:default).update(:order => [:date.asc])
+
+  def check_fields
+    if Transaction.all(amount: self.amount, date: self.date, reason: self.reason).empty?
+      return true
+    else
+      return false, "This combination is not unique"
+    end
+  end
 
   def self.create_from_params(params, user)
     t = new

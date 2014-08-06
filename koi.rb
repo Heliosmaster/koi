@@ -85,7 +85,8 @@ post '/transaction/import' do
   if params[:format] == "koi"
     @errors = Transaction.create_from_koi_csv(params[:file][:tempfile], @user)
   else
-    @errors = Transaction.create_from_rabobank_csv(params[:file][:tempfile], @user, params[:shared])
+    shared = false if params[:shared].nil?
+    @errors = Transaction.create_from_rabobank_csv(params[:file][:tempfile], @user, shared)
   end
   @user.update_values
   if @errors.empty?

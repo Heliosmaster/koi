@@ -102,11 +102,11 @@ post '/transaction/conflict' do
   else
     params["transaction"].each do |index, params_for_transaction|
       if params_for_transaction["id"]
-        p "UPDATING #{params_for_transaction["id"]}"
         error = Transaction.get(params_for_transaction["id"]).update_from_params(params_for_transaction)
+
       else
-        p "CREATING NEW"
         error = Transaction.create_from_params(params_for_transaction, @user)
+
       end
       @errors << error unless error.nil?
     end

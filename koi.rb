@@ -11,7 +11,7 @@ require_relative 'models'
 # If you want the logs displayed you have to do this before the call to setup
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/database-koi.db")
+DataMapper.setup(:default, 'postgres://localhost/koi')
 DataMapper.finalize.auto_upgrade!
 
 User.create(name: "Davide")

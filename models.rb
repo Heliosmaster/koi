@@ -5,8 +5,7 @@ class Transaction
   property :date, Date, required: true
   property :target, Text, lazy: false
   property :reason, Text, lazy: false, required: true
-  property :shared, Boolean, default: true
-
+  property :shared, Boolean, default: false
   validates_with_method :check_fields
 
   belongs_to :user

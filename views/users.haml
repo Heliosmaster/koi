@@ -1,0 +1,33 @@
+%div.row
+  %div.col-md-10.col-md-offset-1
+    %div.pull-right
+      %a.btn.btn-primary{href: '/users/add'}
+        Add user
+        %span.glyphicon.glyphicon-plus
+    %h1 Users
+%div.row{style: "margin-top:50px"}
+  %div.col-md-10.col-md-offset-1
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th Username
+          %th Shared Expenses
+          %th Difference
+          %th # Transactions
+          %th Actions
+      %tbody
+        - @users.each do |user|
+          %tr
+            %td
+              %strong= user.name
+            %td= user.total_shared_expenses
+            %td= user.difference
+            %td= user.transactions.count
+            %td
+              %form{action: "/users/#{user.id}", method: "post"}
+                %input{name: "_method", type: "hidden", value: "delete"}
+                %div.btn-group
+                  %a{href: "/users/#{user.id}", class:"btn btn-primary"}
+                    %span.glyphicon.glyphicon-pencil
+                  %button.btn.btn-danger{type:"submit", class:"btn btn-danger"}
+                    %span.glyphicon.glyphicon-trash

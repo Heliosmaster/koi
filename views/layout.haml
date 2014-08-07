@@ -35,14 +35,18 @@
               %a{href:"/charts"} Charts
 
         %div.navbar-right
-          %form{action: "/select_user", method: "post", class:"navbar-form"}
-            %select.form-control{onchange: "submit()", name: "user_select"}
-              %option Select user
-              - User.all.each do |user|
-                - if user.id == session[:user]
-                  %option{selected: true}
-                    = user.name
-                - else
-                  %option= user.name
+          %ul.nav.navbar.navbar-nav
+            %li
+              %a{href: "/users"} Users
+            %li
+              %form{action: "/select_user", method: "post", class:"navbar-form"}
+                %select.form-control{onchange: "submit()", name: "user_select"}
+                  %option Select user
+                  - User.all.each do |user|
+                    - if user.id == session[:user]
+                      %option{selected: true}
+                        = user.name
+                    - else
+                      %option= user.name
     %div.container
       = yield

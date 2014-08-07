@@ -327,3 +327,37 @@ get '/charts/:year/:month' do
   end
   haml :charts_show
 end
+
+################
+# User management
+
+get '/users' do
+  @users = User.all
+  haml :users
+end
+
+get '/users/add' do
+  haml :user_form
+end
+
+post '/users/add' do
+  User.create(name: params["user"]["name"])
+ redirect to '/users'
+end
+
+get '/users/:id' do
+  @selected_user = User.get(params[:id])
+  haml :user_edit
+end
+
+put '/users/:id' do
+  User.get(params[:id]).update(name: params["user"]["name"])
+  redirect to '/users'
+end
+
+delete '/users/:id' do
+ user = User.get(params[:id])
+ user.transactions.map(&:destroy)
+ user.destroy
+ redirect to '/users'
+end

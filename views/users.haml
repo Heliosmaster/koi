@@ -14,6 +14,7 @@
           %th Shared Expenses
           %th Difference
           %th # Transactions
+          %th Color
           %th Actions
       %tbody
         - @users.each do |user|
@@ -23,6 +24,7 @@
             %td= user.total_shared_expenses
             %td= user.difference
             %td= user.transactions.count
+            %td{style: "background-color: #{user.color}"}= user.color
             %td
               %form{action: "/users/#{user.id}", method: "post"}
                 %input{name: "_method", type: "hidden", value: "delete"}

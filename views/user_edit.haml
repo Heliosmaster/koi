@@ -1,3 +1,5 @@
+%script{src: "//cdn.jsdelivr.net/jquery.minicolors/2.1.2/jquery.minicolors.js"}
+%link{href: "//cdn.jsdelivr.net/jquery.minicolors/2.1.2/jquery.minicolors.css", type: "text/css", rel: "stylesheet"}
 %div.col-md-6.col-md-offset-3
   %form{action: "/users/#{@selected_user.id}", method: "post", class: "form-horizontal"}
     %input{name: "_method", type: "hidden", value: "put"}
@@ -6,6 +8,13 @@
       %div.col-md-10
         %input{type: "text", class: "form-control", value:"#{@selected_user.name}", name: "user[name]"}
     %div.form-group
+      %label.col-md-2 Color
+      %div.col-md-10
+        %input.form-control.color-picker{type: "text", value:"#{@selected_user.color}", name: "user[color]"}
+    %div.form-group
       %div.col-md-10.col-md-offset-2
         %span.btn.btn-default{onclick: "window.history.back()"} Back
         %button{type: "submit", class: "btn btn-primary"} Update
+
+:javascript
+  $(".color-picker").minicolors({theme: 'bootstrap'});

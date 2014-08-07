@@ -7,7 +7,7 @@
 
 %div.row{style: "margin-top:50px;"}
   %div.col-md-10.col-md-offset-1
-    %table.table.table-bordered.table-striped
+    %table.table.table-bordered
       %thead
         %tr
           %th Date
@@ -17,7 +17,7 @@
           %th User
       %tbody
         - @transactions.each do |t|
-          %tr
+          %tr{style: "background-color: #{t.user.color}"}
             %td= t.date.strftime("%d/%m/%Y")
             %td
               %strong{class: t.income? ? "income" : "expense" }= t.amount

@@ -341,7 +341,7 @@ get '/users/add' do
 end
 
 post '/users/add' do
-  User.create(name: params["user"]["name"])
+  User.create(name: params["user"]["name"], color: params["user"]["color"])
  redirect to '/users'
 end
 
@@ -351,7 +351,8 @@ get '/users/:id' do
 end
 
 put '/users/:id' do
-  User.get(params[:id]).update(name: params["user"]["name"])
+  options = params["user"]
+  User.get(params[:id]).update(name: options["name"], color: options["color"])
   redirect to '/users'
 end
 

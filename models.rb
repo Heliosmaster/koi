@@ -140,6 +140,7 @@ class User
   property :last_import_id, Integer
   property :total_shared_expenses, Decimal, precision: 8, scale: 2, default: 0
   property :difference, Decimal, precision: 8, scale: 2, default: 0
+  property :color, String, unique: true
   has n, :transactions
 
   def update_values

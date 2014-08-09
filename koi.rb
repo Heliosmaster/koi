@@ -14,9 +14,6 @@ DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, 'postgres://localhost/koi')
 DataMapper.finalize.auto_upgrade!
 
-User.create(name: "Davide")
-User.create(name: "Kleopatra")
-
 enable :sessions
 enable :method_override
 

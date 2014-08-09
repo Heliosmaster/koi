@@ -375,3 +375,13 @@ delete '/users/:id' do
   user.destroy
   redirect to '/users'
 end
+
+##########################
+# Stats
+
+get '/stats' do
+  transactions = @user.transactions
+  @top5expenses = transactions.select{|t| t.amount <= 0}.sort_by(&:amount).take(20)
+  @top5incomes = transactions.select{|t| t.amount > 0}.sort_by(&:amount).reverse.take(20)
+  haml :stats
+end

@@ -1,0 +1,36 @@
+%div.col-md-10.col-md-offset-1
+  %h1 Top 20 expenses
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th Date
+        %th Amount
+        %th Target
+        %th Reason
+    %tbody
+      - @top5expenses.each do |t|
+        %tr
+          %td= t.date.strftime("%d/%m/%Y")
+          %td.expense
+            %strong= t.amount
+          %td= t.target
+          %td= t.reason
+
+%div.col-md-10.col-md-offset-1
+  %h1 Top 20 incomes
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th Date
+        %th Amount
+        %th Target
+        %th Reason
+    %tbody
+      - @top5incomes.each do |t|
+        %tr
+          %td= t.date.strftime("%d/%m/%Y")
+          %td.income
+            %strong= t.amount
+
+          %td= t.target
+          %td= t.reason

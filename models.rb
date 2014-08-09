@@ -10,7 +10,7 @@ class Transaction
 
   belongs_to :user
 
-  default_scope(:default).update(:order => [:date.asc])
+  default_scope(:default).update(:order => [:date.desc])
 
   def check_fields
     if Transaction.all(amount: self.amount, date: self.date, reason: self.reason).empty?

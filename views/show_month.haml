@@ -4,15 +4,41 @@
       %a.btn.btn-warning{href: "/transaction/bulk_edit/#{@year}/#{@month}"}
         Bulk edit
         %span.glyphicon.glyphicon-th-list
+      %a.btn.btn-success{href: "/transaction/csv"}
+        Import
+        %span.glyphicon.glyphicon-upload
+        = "/"
+        Export
+        %span.glyphicon.glyphicon-download
       %a.btn.btn-primary{href: "/transaction/add"}
         Add transaction
         %span.glyphicon.glyphicon-plus
       %button.btn.btn-default{onclick: "window.history.back()"} Back
-    %h2= "Transactions for #{@pretty_month_year}"
+  %div.col-md-10.col-md-offset-1
+    %h1= "Transactions for #{@pretty_month_year}"
     - if @last_import
       %div.pull-right
         %strong Last imported transaction:
         = @last_import.strftime("%d/%m/%Y")
+  %div.col-md-10.col-md-offset-1
+    - previous_month = @current_date.prev_month
+    - next_month = @current_date.next_month
+    - unless @user.transactions(:date.gt => next_month).empty?
+      %div.pull-left
+        - if Date.today.prev_month <= next_month
+          %a.btn.btn-primary{href: "/"}
+            %span.glyphicon.glyphicon-backward
+            Next month
+        - else
+          %a.btn.btn-primary{href: "/transactions/show/#{next_month.year}/#{next_month.month}"}
+            %span.glyphicon.glyphicon-backward
+            Next month
+
+    %div.pull-right
+      %a.btn.btn-info{href: "/transactions/show/all"} Show all
+      %a.btn.btn-primary{href: "/transactions/show/#{previous_month.year}/#{previous_month.month}"}
+        %span.glyphicon.glyphicon-forward
+        Previous month
   %div.col-md-10.col-md-offset-1{style:"margin-top:20px;"}
     %table.table.table-bordered.table-striped
       %thead

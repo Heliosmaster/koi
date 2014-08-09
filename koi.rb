@@ -30,29 +30,39 @@ before do
   end
 end
 
+get '/transactions/show/all' do
+  @transactions = @user.transactions
+  @transactions_by_year_month = @user.transactions_by_year_month
+  @last_import_date ||= @user.last_import_date
+  @last_import_id ||= @user.last_import_id
+
+  haml :show_all, layout: :layout
+end
+
 get '/' do
   if @user
-    @transactions = @user.transactions
-    @transactions_by_year_month = @user.transactions_by_year_month
-    @last_import_date ||= @user.last_import_date
-    @last_import_id ||= @user.last_import_id
+    @current_date = Date.parse("#{Date.today.year}-#{Date.today.month}-01")
+    @year = @current_date.year
+    @month = @current_date.month
+    @pretty_month_year = "current month"
+    @transactions = @user.transactions_by_year_month[@year][@month]
   end
-
-  haml :home, layout: :layout
+  haml :show_month
 end
 
 get '/transactions/show/:year/:month' do
-  @year = params[:year].to_i
-  @month = params[:month].to_i
-  @pretty_month_year = Date.parse("#{@year}-#{@month}-01").strftime("%B %Y")
+  @current_date = Date.parse("#{params[:year]}-#{params[:month]}-01")
+  @year = @current_date.year
+  @month = @current_date.month
+  @pretty_month_year = @current_date.strftime("%B %Y")
   @transactions = @user.transactions_by_year_month[@year][@month]
-  haml :year_month
+  haml :show_month
 end
 
 get '/transactions/show/:year' do
   @year = params[:year].to_i
   @transactions = @user.transactions_by_year_month[@year]
-  haml :year
+  haml :show_year
 end
 
 
@@ -348,7 +358,7 @@ end
 
 post '/users/add' do
   User.create(name: params["user"]["name"], color: params["user"]["color"])
- redirect to '/users'
+  redirect to '/users'
 end
 
 get '/users/:id' do
@@ -363,8 +373,8 @@ put '/users/:id' do
 end
 
 delete '/users/:id' do
- user = User.get(params[:id])
- user.transactions.map(&:destroy)
- user.destroy
- redirect to '/users'
+  user = User.get(params[:id])
+  user.transactions.map(&:destroy)
+  user.destroy
+  redirect to '/users'
 end

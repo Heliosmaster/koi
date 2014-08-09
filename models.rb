@@ -158,8 +158,8 @@ class User
   end
 
   def daily_increments(transactions)
-    start_day = transactions.first.date
-    end_day = transactions.last.date
+    start_day = transactions.last.date
+    end_day = transactions.first.date
     final_hash = {}
     (start_day+1..end_day).each do |day|
       final_hash[day] = transactions.select{|t| t.date == day}.map(&:amount).sum

@@ -13,7 +13,7 @@
             %td
               %strong= @stats[user.id][:expenses]
             %td
-              %strong{class: @stats[user.id][:difference] >= 0 ? "income" : "expense" }= @stats[user.id][:difference]
+              %strong{class: @stats[user.id][:difference] >= 0 ? "income" : "expense" }= "%+.2f " % @stats[user.id][:difference]
 
 %div.row
   %div.col-md-2.col-md-offset-5

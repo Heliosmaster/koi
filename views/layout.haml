@@ -24,7 +24,7 @@
           %li
             %a{href:"/balance"}
               - if @difference
-                %span#difference{class: @difference >=0 ? "income" : "expense" }= @difference
+                %span#difference{class: @difference >=0 ? "income" : "expense" }= "%+.2f" % @difference
               - else
                 Balance
           - if @user

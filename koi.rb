@@ -221,7 +221,13 @@ get '/balance' do
         count: t_by_year_month.length }
     end
   end
-  @stats = User.expenses_and_differences
+  @stats = {}
+  User.all.each do |user|
+    user.update_values
+    @stats[user.id] = {}
+    @stats[user.id][:expenses] = user.total_shared_expenses.round(2)
+    @stats[user.id][:difference] = user.difference.round(2)
+  end
   haml :balance, layout: :layout
 end
 

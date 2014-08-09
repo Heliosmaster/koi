@@ -116,10 +116,6 @@ class Transaction
     "#{self.date.strftime("%d/%m/%Y")},#{self.amount},#{self.target},#{self.reason},#{self.shared}"
   end
 
-  def different_month?(transaction)
-    self.date.month != transaction.date.month
-  end
-
   def self.all_shared_into_hash
     t = Transaction.all(shared: true).group_by(&:year)
     grouped_transactions = {}
@@ -166,16 +162,6 @@ class User
   def export_to_csv
     "Date,amount,target,reason,shared" + "\n" +
       self.transactions.map(&:to_csv_row).join("\n") + "\n"
-  end
-
-  def self.expenses_and_differences
-    stats = {}
-    User.all.each do |user|
-      stats[user.id] = {}
-      stats[user.id][:expenses] = user.total_shared_expenses
-      stats[user.id][:difference] = user.difference
-    end
-    stats
   end
 
   def daily_increments(transactions)

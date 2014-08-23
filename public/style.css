@@ -28,7 +28,16 @@
     .container{
         width:1560px
     }
+}
 body {
     font-family: 'Open Sans', sans-serif;
 }
+.user-color {
+    width: 20px;
+    height: 20px;
+}
+.li-user-color {
+    display: block;
+    padding: 15px;
+    position: relative;
 }

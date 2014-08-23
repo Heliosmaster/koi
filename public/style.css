@@ -28,4 +28,7 @@
     .container{
         width:1560px
     }
+body {
+    font-family: 'Open Sans', sans-serif;
+}
 }

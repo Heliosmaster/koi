@@ -42,7 +42,10 @@ get '/' do
     @year = @current_date.year
     @month = @current_date.month
     @pretty_month_year = "current month"
-    @transactions = @user.transactions_by_year_month[@year][@month]
+    if @user.transactions.empty?
+      redirect to '/transaction/csv'
+    end
+    @transactions = @user.transactions_by_year_month[@year][@month] || []
   end
   haml :show_month
 end

@@ -24,3 +24,22 @@
             %td= t.target
             %td= t.reason
             %td= t.user.name
+      %tfoot{style: "border-top: 2px solid black;"}
+        - @transactions.group_by{|t| t.user.name}.each do |g|
+          %tr{style: "background-color: #{g[1][0].user.color}"}
+            %td= g[0]
+            %td
+              - result = g[1].inject(0){|sum,t| sum += t.amount}
+              %strong{class: (result > 0) ? "income" : "expense" }= result
+            %td
+            %td
+            %td
+
+        %tr
+          %td Total
+          %td
+            - tot = @transactions.inject(0){|sum,t| sum += t.amount}
+            %strong{class: (tot > 0) ? "income" : "expense" }= tot
+          %td
+          %td
+          %td

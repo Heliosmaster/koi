@@ -166,7 +166,7 @@ post '/transaction/export' do
 end
 
 get '/transaction/bulk_edit' do
-  @transactions = @user.transactions_by_year_month
+  @transactions = @user.transactions_by_year_month | []
   haml :bulk_edit, layout: :layout
 end
 
@@ -175,7 +175,7 @@ get '/transaction/bulk_edit/:year/:month' do
   month = params[:month].to_i
   @pretty_month_year = Date.parse("#{year}-#{month}-01").strftime("%B %Y")
   transactions_ym = @user.transactions_by_year_month
-  @transactions = transactions_ym[year][month]
+  @transactions = transactions_ym[year][month] || []
   haml :bulk_edit_month, layout: :layout
 end
 
